@@ -12,14 +12,14 @@ import java.util.Random;
  */
 public class AbstractArtDrawing {
     // magic numbers
-    private static int pointRadius = 3;
-    private static int windowHeight = 400;
-    private static int windowWidth = 300;
+    private static final int POINT_RADIUS = 3;
+    private static final int WINDOW_HEIGHT = 400;
+    private static final int WINDOW_WIDTH = 300;
 
     // magic colors
-    private static Color lineColor = Color.black;
-    private static Color middleColor = Color.blue;
-    private static Color intersectingColor = Color.RED;
+    private static final Color LINE_COLOR = Color.black;
+    private static final Color MIDDLE_COLOR = Color.blue;
+    private static final Color INTERSECTING_COLOR = Color.RED;
 
     /**
      * generate random line in the window width and height.
@@ -28,10 +28,10 @@ public class AbstractArtDrawing {
      */
     public static Line generateRandomLine() {
         Random rand = new Random();
-        double x1 = rand.nextDouble() * windowWidth;
-        double y1 = rand.nextDouble() * windowHeight;
-        double x2 = rand.nextDouble() * windowWidth;
-        double y2 = rand.nextDouble() * windowHeight;
+        double x1 = rand.nextDouble() * WINDOW_WIDTH;
+        double y1 = rand.nextDouble() * WINDOW_HEIGHT;
+        double x2 = rand.nextDouble() * WINDOW_WIDTH;
+        double y2 = rand.nextDouble() * WINDOW_HEIGHT;
         return new Line(x1, y1, x2, y2);
     }
 
@@ -42,7 +42,7 @@ public class AbstractArtDrawing {
      * @param d draw surface to draw in.
      */
     public static void drawLine(Line l, DrawSurface d) {
-        d.setColor(lineColor);
+        d.setColor(LINE_COLOR);
         int x1 = (int) l.start().getX();
         int y1 = (int) l.start().getY();
         int x2 = (int) l.end().getX();
@@ -57,11 +57,11 @@ public class AbstractArtDrawing {
      * @param d draw surface to draw in.
      */
     private static void drawMiddlePoint(Line l, DrawSurface d) {
-        d.setColor(middleColor);
+        d.setColor(MIDDLE_COLOR);
         Point middle = l.middle();
         int xMiddle = (int) middle.getX();
         int yMiddle = (int) middle.getY();
-        d.fillCircle(xMiddle, yMiddle, pointRadius);
+        d.fillCircle(xMiddle, yMiddle, POINT_RADIUS);
     }
 
     /**
@@ -72,11 +72,11 @@ public class AbstractArtDrawing {
      * @param d  draw surface to draw in.
      */
     public static void drawIntersectingPoints(Line l1, Line l2, DrawSurface d) {
-        d.setColor(intersectingColor);
+        d.setColor(INTERSECTING_COLOR);
         if (l1.isIntersecting(l2)) {
             Point intersectingPoint = l1.intersectionWith(l2);
             if (intersectingPoint != null) {
-                d.fillCircle((int) intersectingPoint.getX(), (int) intersectingPoint.getY(), pointRadius);
+                d.fillCircle((int) intersectingPoint.getX(), (int) intersectingPoint.getY(), POINT_RADIUS);
             }
         }
     }
@@ -87,7 +87,7 @@ public class AbstractArtDrawing {
      * @param args array of string that gets from the terminal - unused in this class.
      */
     public static void main(String[] args) {
-        GUI gui = new GUI("Random Lines", windowWidth, windowHeight);
+        GUI gui = new GUI("Random Lines", WINDOW_WIDTH, WINDOW_HEIGHT);
         DrawSurface drawSurface = gui.getDrawSurface();
         Line[] lines = new Line[10];
         for (int i = 0; i < lines.length; i++) {

@@ -4,8 +4,8 @@
  * class who represent line between tow points.
  */
 public class Line {
-    private Point start;
-    private Point end;
+    private final Point start;
+    private final Point end;
 
     /**
      * constructor - initialize the start point of the line and the end point of the line by the passed points.

@@ -9,8 +9,8 @@ import biuoop.DrawSurface;
  */
 public class Ball {
     private Point center;
-    private int radius;
-    private Color color;
+    private final int radius;
+    private final Color color;
     private Velocity velocity;
 
     /**
