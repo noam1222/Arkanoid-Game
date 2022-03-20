@@ -148,7 +148,6 @@ public class Line {
             }
             // the lines "touch" each other in one point.
             return this.end;
-            //try
         }
         return null;
     }
