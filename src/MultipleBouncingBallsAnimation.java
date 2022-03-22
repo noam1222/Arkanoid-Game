@@ -13,38 +13,6 @@ public class MultipleBouncingBallsAnimation {
     private static final Box CURRENT_BOX = new Box(300, 400);
 
     /**
-     * convers String array to int array.
-     *
-     * @param arr String array to convert.
-     * @return arr as int Array.
-     */
-    public static int[] stringArrayToInt(String[] arr) {
-        int[] newArr = new int[arr.length];
-        for (int i = 0; i < newArr.length; i++) {
-            newArr[i] = Integer.parseInt(arr[i]);
-        }
-        return newArr;
-    }
-
-    /**
-     * sort the receiving balls radius String array.
-     *
-     * @param ballsRadius the receiving balls radius String array.
-     */
-    public static void sortBallsRadius(int[] ballsRadius) {
-        for (int i = 0; i < ballsRadius.length - 1; i++) {
-            for (int j = 0; j < ballsRadius.length - i - 1; j++) {
-                if (ballsRadius[j] > ballsRadius[j + 1]) {
-                    //swap
-                    int temp = ballsRadius[j];
-                    ballsRadius[j] = ballsRadius[j + 1];
-                    ballsRadius[j + 1] = temp;
-                }
-            }
-        }
-    }
-
-    /**
      * generate the balls array in ascending speed order.
      *
      * @param sortedBallsRadius String array of balls radius who sorted by size.
@@ -77,8 +45,8 @@ public class MultipleBouncingBallsAnimation {
         GUI gui = new GUI("Bouncing Balls", CURRENT_BOX.getWidth(), CURRENT_BOX.getHeight());
         Sleeper sleeper = new Sleeper();
 
-        int[] intArgs = stringArrayToInt(args);
-        sortBallsRadius(intArgs);
+        int[] intArgs = ArraysOperations.stringArrayToInt(args);
+        ArraysOperations.sortIntArray(intArgs);
 
         Ball[] balls = generateSlowerBalls(intArgs, CURRENT_BOX);
 

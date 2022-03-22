@@ -14,25 +14,6 @@ public class MultipleFramesBouncingBallsAnimation {
     private static Box yellowBox = new Box(450, 450, 150, 150);
 
     /**
-     * cut array of string to new array in given size.
-     * @param args array to cut.
-     * @param start start the cut from here (included).
-     * @param stop stop the cut here (excluded).
-     * @return the cut array.
-     */
-    private static String[] cutArrayOfString(String[] args, int start, int stop) {
-        int newSize = stop - start;
-        String[] arr = new String[newSize];
-
-        int index = 0;
-        for (int i = start; i < stop; i++) {
-            arr[index] = args[i];
-            index++;
-        }
-        return arr;
-    }
-
-    /**
      * draw the grey and yellow rectangles.
      * @param gui GUI object to draw in surface from him.
      * @return the surface who drew on.
@@ -56,21 +37,26 @@ public class MultipleFramesBouncingBallsAnimation {
         Sleeper sleeper = new Sleeper();
 
         //assuming args.length is even number.
-        String[] firstRadius = cutArrayOfString(args, 0, args.length / 2);
-        String[] secondRadius = cutArrayOfString(args, args.length / 2, args.length);
+        String[] firstRadius = ArraysOperations.cutArrayOfString(args, 0, args.length / 2);
+        String[] secondRadius = ArraysOperations.cutArrayOfString(args, args.length / 2, args.length);
 
-        int[] firstRadiusInts = MultipleBouncingBallsAnimation.stringArrayToInt(firstRadius);
-        int[] secondRadiusInts = MultipleBouncingBallsAnimation.stringArrayToInt(secondRadius);
+        // convert to int arrays.
+        int[] firstRadiusInts = ArraysOperations.stringArrayToInt(firstRadius);
+        int[] secondRadiusInts = ArraysOperations.stringArrayToInt(secondRadius);
 
-        MultipleBouncingBallsAnimation.sortBallsRadius(firstRadiusInts);
-        MultipleBouncingBallsAnimation.sortBallsRadius(secondRadiusInts);
+        //sort the arrays.
+        ArraysOperations.sortIntArray(firstRadiusInts);
+        ArraysOperations.sortIntArray(secondRadiusInts);
 
+        // insert the balls into the array as requested in the assignment.
         Ball[] balls1 = MultipleBouncingBallsAnimation.generateSlowerBalls(firstRadiusInts, greyBox);
         Ball[] balls2 = MultipleBouncingBallsAnimation.generateSlowerBalls(secondRadiusInts, yellowBox);
 
+        // create grey and yellow boxes.
         BoxOfBallsAnimation greyBoxOfBalls = new BoxOfBallsAnimation(greyBox, balls1);
         BoxOfBallsAnimation yellowBoxOfBalls = new BoxOfBallsAnimation(yellowBox, balls2);
 
+        //animate the balls in their boxes.
         while (true) {
             DrawSurface surface = drawRectangles(gui);
             greyBoxOfBalls.drawBalls(surface);
