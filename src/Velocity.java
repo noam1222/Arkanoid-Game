@@ -4,8 +4,8 @@
  * Velocity specifies the change in position on the `x` and the `y` axes.
  */
 public class Velocity {
-    private double dx;
-    private double dy;
+    private final double dx;
+    private final double dy;
 
     /**
      * constructor - initialize the change in position on the `x` and the `y` axes.

@@ -239,11 +239,11 @@ public class Line {
         } else {
            /* this.line equation: y = m1x + c1
            other line equation: y = m2x + c2
-           (m1, m2 can't be null because of the 'if' blocks before)
            => m2x + c2 = m1x + c1
            => m2x - m1x = c1 - c2
            => (m2 - m1)x = c1 - c2
-           => x = (c1 - c2) / (m2 - m1) */
+           => x = (c1 - c2) / (m2 - m1)
+            m1, m2 can't be null because of the 'if' blocks before. */
             m1 = this.lineSlope();
             c1 = this.lineConstant(m1);
             m2 = other.lineSlope();

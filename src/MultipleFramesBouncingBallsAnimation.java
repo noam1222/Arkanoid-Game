@@ -10,8 +10,8 @@ import java.awt.Color;
  * animate multiple bouncing balls in multiple frames.
  */
 public class MultipleFramesBouncingBallsAnimation {
-    private static Box greyBox = new Box(50, 50, 450, 450);
-    private static Box yellowBox = new Box(450, 450, 150, 150);
+    private static final Box GREY_BOX = new Box(50, 50, 450, 450);
+    private static final Box YELLOW_BOX = new Box(450, 450, 150, 150);
 
     /**
      * draw the grey and yellow rectangles.
@@ -21,9 +21,9 @@ public class MultipleFramesBouncingBallsAnimation {
     private static DrawSurface drawRectangles(GUI gui) {
         DrawSurface surface = gui.getDrawSurface();
         surface.setColor(Color.gray);
-        surface.fillRectangle(50, 50, greyBox.getWidth(), greyBox.getHeight());
+        surface.fillRectangle(50, 50, GREY_BOX.getWidth(), GREY_BOX.getHeight());
         surface.setColor(Color.yellow);
-        surface.fillRectangle(450, 450, yellowBox.getWidth(), yellowBox.getHeight());
+        surface.fillRectangle(450, 450, YELLOW_BOX.getWidth(), YELLOW_BOX.getHeight());
         return surface;
     }
 
@@ -49,12 +49,12 @@ public class MultipleFramesBouncingBallsAnimation {
         ArraysOperations.sortIntArray(secondRadiusInts);
 
         // insert the balls into the array as requested in the assignment.
-        Ball[] balls1 = MultipleBouncingBallsAnimation.generateSlowerBalls(firstRadiusInts, greyBox);
-        Ball[] balls2 = MultipleBouncingBallsAnimation.generateSlowerBalls(secondRadiusInts, yellowBox);
+        Ball[] balls1 = MultipleBouncingBallsAnimation.generateSlowerBalls(firstRadiusInts, GREY_BOX);
+        Ball[] balls2 = MultipleBouncingBallsAnimation.generateSlowerBalls(secondRadiusInts, YELLOW_BOX);
 
         // create grey and yellow boxes.
-        BoxOfBallsAnimation greyBoxOfBalls = new BoxOfBallsAnimation(greyBox, balls1);
-        BoxOfBallsAnimation yellowBoxOfBalls = new BoxOfBallsAnimation(yellowBox, balls2);
+        BoxOfBallsAnimation greyBoxOfBalls = new BoxOfBallsAnimation(GREY_BOX, balls1);
+        BoxOfBallsAnimation yellowBoxOfBalls = new BoxOfBallsAnimation(YELLOW_BOX, balls2);
 
         //animate the balls in their boxes.
         while (true) {

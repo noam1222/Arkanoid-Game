@@ -4,8 +4,8 @@
  * class who describe point in two-dimensional space.
  */
 public class Point {
-    private double x;
-    private double y;
+    private final double x;
+    private final double y;
 
     /**
      * constructor - assign the x, y who passed to this.x, this.y.
