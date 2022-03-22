@@ -57,7 +57,7 @@ public class MultipleBouncingBallsAnimation {
         double dy = sortedBallsRadius.length + 1;
         for (int i = 0; i < sortedBallsRadius.length; i++) {
             int radius = sortedBallsRadius[i];
-            balls[i] = box.getBallInBox(radius);
+            balls[i] = box.getRandomBallInBox(radius);
             balls[i].setVelocity(dx, dy);
             // smaller balls are faster.
             if (balls[i].getSize() < BIG_BALLS_SIZE) {

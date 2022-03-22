@@ -9,7 +9,7 @@ import biuoop.Sleeper;
  */
 public class BouncingBallAnimation {
     static final Box CURRENT_BOX = new Box(200, 200);
-    static final int BALL_RADIUS = 30;
+    static final int BALL_RADIUS = 300;
 
     /**
      * draw animation of bouncing ball.

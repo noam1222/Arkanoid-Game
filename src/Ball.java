@@ -9,7 +9,7 @@ import biuoop.DrawSurface;
  */
 public class Ball {
     private Point center;
-    private final int radius;
+    private int radius;
     private final Color color;
     private Velocity velocity;
 
@@ -79,13 +79,28 @@ public class Ball {
     }
 
     /**
-     * draw the ball on the given DrawSurface.
+     * get velocity of the ball.
      *
-     * @param surface the surface to draw in.
+     * @return velocity of the ball.
      */
-    public void drawOn(DrawSurface surface) {
-        surface.setColor(this.color);
-        surface.fillCircle(this.getX(), this.getY(), this.radius);
+    public Velocity getVelocity() {
+        return this.velocity;
+    }
+
+    /**
+     * set the size of the ball.
+     * @param radius the new size to set.
+     */
+    public void setSize(int radius) {
+        this.radius = radius;
+    }
+
+    /**
+     * set the center of the ball.
+     * @param center the new center to set.
+     */
+    public void setCenter(Point center) {
+        this.center = center;
     }
 
     /**
@@ -108,19 +123,19 @@ public class Ball {
     }
 
     /**
-     * get velocity of the ball.
-     *
-     * @return velocity of the ball.
-     */
-    public Velocity getVelocity() {
-        return this.velocity;
-    }
-
-    /**
      * move the ball one step further by the ball velocity.
      */
     public void moveOneStep() {
         this.center = this.getVelocity().applyToPoint(this.center);
     }
 
+    /**
+     * draw the ball on the given DrawSurface.
+     *
+     * @param surface the surface to draw in.
+     */
+    public void drawOn(DrawSurface surface) {
+        surface.setColor(this.color);
+        surface.fillCircle(this.getX(), this.getY(), this.radius);
+    }
 }

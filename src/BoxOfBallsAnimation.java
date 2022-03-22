@@ -19,7 +19,7 @@ public class BoxOfBallsAnimation {
     public BoxOfBallsAnimation(Box box, Ball[] balls) {
         this.box = box;
         this.balls = balls;
-        this.handelBadBallsLocation();
+        this.handelBadBallsLocationAndSize();
     }
 
     /**
@@ -31,7 +31,7 @@ public class BoxOfBallsAnimation {
         this.box = box;
         this.balls = new Ball[1];
         this.balls[0] = ball;
-        this.handelBadBallsLocation();
+        this.handelBadBallsLocationAndSize();
     }
 
     /**
@@ -47,11 +47,18 @@ public class BoxOfBallsAnimation {
         }
     }
 
-    //TODO: make right.
-    private void handelBadBallsLocation() {
-        for (Ball ball : this.balls) {
-            while (this.box.isBallWidthOutOfBorder(ball) || this.box.isBallHeightOutOfBorder(ball)) {
-                ball.moveOneStep();
+    /**
+     * if the ball radius is bigger than the box or the box center is out of box solve the problems.
+     */
+    private void handelBadBallsLocationAndSize() {
+        for (int i = 0; i < this.balls.length; i++) {
+            if (this.balls[i].getSize() >= this.box.getWidth() || this.balls[i].getSize() >= this.box.getHeight()) {
+                int newRadius = this.box.squeezeRadiusToBox(this.balls[i].getSize());
+                this.balls[i].setSize(newRadius);
+            }
+            if (box.isBallWidthOutOfBorder(this.balls[i]) || box.isBallHeightOutOfBorder(this.balls[i])) {
+                Point newCenter = this.box.getRandomCenterPointInBox(this.balls[i].getSize());
+                this.balls[i].setCenter(newCenter);
             }
         }
     }

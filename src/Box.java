@@ -100,25 +100,46 @@ public class Box {
     }
 
     /**
+     * squeeze radius to fit the box size.
+     * @param radius the radius to squeeze.
+     * @return the squeezed radius.
+     */
+    public int squeezeRadiusToBox(int radius) {
+        Random rand = new Random();
+        return rand.nextInt(Math.min(this.width, this.height)) / 2;
+    }
+
+    /**
+     * get random center point in the box, respectively to the box size.
+     * @param radius the radius to fit the center point to the box.
+     * @return good center point respectively to the radius.
+     */
+    public Point getRandomCenterPointInBox(int radius) {
+        Random rand = new Random();
+        double xCenter = rand.nextDouble(this.leftEdge + radius, this.rightEdge - radius);
+        double yCenter = rand.nextDouble(this.topEdge + radius, this.bottomEdge - radius);
+        return new Point(xCenter, yCenter);
+    }
+
+    /**
      * generate random ball in the box borders.
      * @param radius the radius of the ball to generate.
      * @return ball in the box with the given radius. if the radius is too big for the box - return null.
      */
-    public Ball getBallInBox(int radius) {
+    public Ball getRandomBallInBox(int radius) {
         // check if ball is small enough.
         if (2 * radius > this.width || 2 * radius > this.height) {
-            return null;
+            radius = squeezeRadiusToBox(radius);
         }
 
-        Random rand = new Random();
-        double xCenter = rand.nextDouble(this.leftEdge + radius, this.rightEdge - radius);
-        double yCenter = rand.nextDouble(this.topEdge + radius, this.bottomEdge - radius);
+        Point center = getRandomCenterPointInBox(radius);
 
+        Random rand = new Random();
         float r = rand.nextFloat();
         float g = rand.nextFloat();
         float b = rand.nextFloat();
         Color color = new Color(r, g, b);
 
-        return new Ball(xCenter, yCenter, radius, color);
+        return new Ball(center, radius, color);
     }
 }
