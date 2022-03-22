@@ -9,20 +9,34 @@ import biuoop.Sleeper;
  */
 public class MultipleBouncingBallsAnimation {
     // magic numbers
-    private static int bigBallsSize = 50;
-    private static Box currentBox = new Box(300, 400);
+    private static final int BIG_BALLS_SIZE = 50;
+    private static final Box CURRENT_BOX = new Box(300, 400);
+
+    /**
+     * convers String array to int array.
+     *
+     * @param arr String array to convert.
+     * @return arr as int Array.
+     */
+    public static int[] stringArrayToInt(String[] arr) {
+        int[] newArr = new int[arr.length];
+        for (int i = 0; i < newArr.length; i++) {
+            newArr[i] = Integer.parseInt(arr[i]);
+        }
+        return newArr;
+    }
 
     /**
      * sort the receiving balls radius String array.
      *
      * @param ballsRadius the receiving balls radius String array.
      */
-    public static void sortBallsRadius(String[] ballsRadius) {
+    public static void sortBallsRadius(int[] ballsRadius) {
         for (int i = 0; i < ballsRadius.length - 1; i++) {
             for (int j = 0; j < ballsRadius.length - i - 1; j++) {
-                if (Integer.parseInt(ballsRadius[j]) > Integer.parseInt(ballsRadius[j + 1])) {
+                if (ballsRadius[j] > ballsRadius[j + 1]) {
                     //swap
-                    String temp = ballsRadius[j];
+                    int temp = ballsRadius[j];
                     ballsRadius[j] = ballsRadius[j + 1];
                     ballsRadius[j + 1] = temp;
                 }
@@ -34,19 +48,19 @@ public class MultipleBouncingBallsAnimation {
      * generate the balls array in ascending speed order.
      *
      * @param sortedBallsRadius String array of balls radius who sorted by size.
-     * @param box the box to generate the balls in.
+     * @param box               the box to generate the balls in.
      * @return balls array.
      */
-    public static Ball[] generateBalls(String[] sortedBallsRadius, Box box) {
+    public static Ball[] generateSlowerBalls(int[] sortedBallsRadius, Box box) {
         Ball[] balls = new Ball[sortedBallsRadius.length];
-        double dx = sortedBallsRadius.length;
-        double dy = sortedBallsRadius.length;
+        double dx = sortedBallsRadius.length + 1;
+        double dy = sortedBallsRadius.length + 1;
         for (int i = 0; i < sortedBallsRadius.length; i++) {
-            int radius = Integer.parseInt(sortedBallsRadius[i]);
+            int radius = sortedBallsRadius[i];
             balls[i] = box.getBallInBox(radius);
             balls[i].setVelocity(dx, dy);
             // smaller balls are faster.
-            if (balls[i].getSize() < bigBallsSize) {
+            if (balls[i].getSize() < BIG_BALLS_SIZE) {
                 dx--;
                 dy--;
             }
@@ -55,36 +69,24 @@ public class MultipleBouncingBallsAnimation {
     }
 
     /**
-     * draw balls in receiving box.
-     * @param balls Balls array to draw.
-     * @param surface the main surface to draw on.
-     * @param box the box limit do draw in.
-     */
-    public static void drawBalls(Ball[] balls, DrawSurface surface, Box box) {
-        for (Ball ball : balls) {
-            ball.moveOneStep(box);
-            ball.drawOn(surface);
-        }
-    }
-
-    /**
      * main function - handle the animation of multiple bouncing balls.
      *
      * @param args array of the balls radius.
      */
     public static void main(String[] args) {
-        GUI gui = new GUI("Bouncing Balls", currentBox.getWidth(), currentBox.getHeight());
+        GUI gui = new GUI("Bouncing Balls", CURRENT_BOX.getWidth(), CURRENT_BOX.getHeight());
         Sleeper sleeper = new Sleeper();
 
-        sortBallsRadius(args);
+        int[] intArgs = stringArrayToInt(args);
+        sortBallsRadius(intArgs);
 
-        Ball[] balls = generateBalls(args, currentBox);
+        Ball[] balls = generateSlowerBalls(intArgs, CURRENT_BOX);
+
+        BoxOfBallsAnimation boxOfBalls = new BoxOfBallsAnimation(CURRENT_BOX, balls);
 
         while (true) {
             DrawSurface surface = gui.getDrawSurface();
-            drawBalls(balls, surface, currentBox);
-            sleeper.sleepFor(15);
-            gui.show(surface);
+            boxOfBalls.animateBalls(gui, surface, sleeper);
         }
     }
 }

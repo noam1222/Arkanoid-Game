@@ -117,17 +117,10 @@ public class Ball {
     }
 
     /**
-     * move the ball one step further by the ball velocity, considering width and height that the user input.
-     * @param box move the ball only in the box Border.
+     * move the ball one step further by the ball velocity.
      */
-    public void moveOneStep(Box box) {
+    public void moveOneStep() {
         this.center = this.getVelocity().applyToPoint(this.center);
-        if (box.isBallWidthOutOfBorder(this)) {
-            this.setVelocity(-this.getVelocity().getDx(), this.getVelocity().getDy());
-        }
-        if (box.isBallHeightOutOfBorder(this)) {
-            this.setVelocity(this.getVelocity().getDx(), -this.getVelocity().getDy());
-        }
     }
 
 }

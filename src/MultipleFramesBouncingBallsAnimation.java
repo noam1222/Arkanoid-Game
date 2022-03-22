@@ -59,18 +59,22 @@ public class MultipleFramesBouncingBallsAnimation {
         String[] firstRadius = cutArrayOfString(args, 0, args.length / 2);
         String[] secondRadius = cutArrayOfString(args, args.length / 2, args.length);
 
-        MultipleBouncingBallsAnimation.sortBallsRadius(firstRadius);
-        MultipleBouncingBallsAnimation.sortBallsRadius(secondRadius);
+        int[] firstRadiusInts = MultipleBouncingBallsAnimation.stringArrayToInt(firstRadius);
+        int[] secondRadiusInts = MultipleBouncingBallsAnimation.stringArrayToInt(secondRadius);
 
-        Ball[] balls1 = MultipleBouncingBallsAnimation.generateBalls(firstRadius, greyBox);
-        Ball[] balls2 = MultipleBouncingBallsAnimation.generateBalls(secondRadius, yellowBox);
+        MultipleBouncingBallsAnimation.sortBallsRadius(firstRadiusInts);
+        MultipleBouncingBallsAnimation.sortBallsRadius(secondRadiusInts);
+
+        Ball[] balls1 = MultipleBouncingBallsAnimation.generateSlowerBalls(firstRadiusInts, greyBox);
+        Ball[] balls2 = MultipleBouncingBallsAnimation.generateSlowerBalls(secondRadiusInts, yellowBox);
+
+        BoxOfBallsAnimation greyBoxOfBalls = new BoxOfBallsAnimation(greyBox, balls1);
+        BoxOfBallsAnimation yellowBoxOfBalls = new BoxOfBallsAnimation(yellowBox, balls2);
 
         while (true) {
             DrawSurface surface = drawRectangles(gui);
-            MultipleBouncingBallsAnimation.drawBalls(balls1, surface, greyBox);
-            MultipleBouncingBallsAnimation.drawBalls(balls2, surface, yellowBox);
-            sleeper.sleepFor(15);
-            gui.show(surface);
+            greyBoxOfBalls.drawBalls(surface);
+            yellowBoxOfBalls.animateBalls(gui, surface, sleeper);
         }
     }
 }

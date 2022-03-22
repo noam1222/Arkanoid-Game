@@ -7,12 +7,12 @@ import java.awt.Color;
  * class who represent box in the screen.
  */
 public class Box {
-    private int width;
-    private int height;
-    private double rightEdge;
-    private double leftEdge;
-    private double bottomEdge;
-    private double topEdge;
+    private final int width;
+    private final int height;
+    private final double rightEdge;
+    private final double leftEdge;
+    private final double bottomEdge;
+    private final double topEdge;
 
     /**
      * constructor - initialize box object.
