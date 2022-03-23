@@ -16,8 +16,9 @@ public class Box {
 
     /**
      * constructor - initialize box object.
-     * @param start the start point of the box on the screen.
-     * @param boxWidth the width of the box.
+     *
+     * @param start     the start point of the box on the screen.
+     * @param boxWidth  the width of the box.
      * @param boxHeight the height of the box.
      */
     Box(Point start, int boxWidth, int boxHeight) {
@@ -31,7 +32,8 @@ public class Box {
 
     /**
      * constructor - initialize box object with (0, 0) as start point.
-     * @param boxWidth the width of the box.
+     *
+     * @param boxWidth  the width of the box.
      * @param boxHeight the height of the box.
      */
     Box(int boxWidth, int boxHeight) {
@@ -40,9 +42,10 @@ public class Box {
 
     /**
      * constructor - initialize box object.
-     * @param x x value of the start point of the box on the screen.
-     * @param y y value of the start point of the box on the screen.
-     * @param boxWidth the width of the box.
+     *
+     * @param x         x value of the start point of the box on the screen.
+     * @param y         y value of the start point of the box on the screen.
+     * @param boxWidth  the width of the box.
      * @param boxHeight the height of the box.
      */
     Box(double x, double y, int boxWidth, int boxHeight) {
@@ -51,6 +54,7 @@ public class Box {
 
     /**
      * get the width of the box.
+     *
      * @return the width of the box.
      */
     public int getWidth() {
@@ -59,6 +63,7 @@ public class Box {
 
     /**
      * get the height of the box.
+     *
      * @return the height of the box.
      */
     public int getHeight() {
@@ -67,6 +72,7 @@ public class Box {
 
     /**
      * get the start point of the box.
+     *
      * @return the start point of the box.
      */
     public Point getStartPoint() {
@@ -75,6 +81,7 @@ public class Box {
 
     /**
      * check if ball is out the box width borders.
+     *
      * @param ball the ball to check if out of border.
      * @return true if the ball is out the box width borders, false otherwise.
      */
@@ -88,6 +95,7 @@ public class Box {
 
     /**
      * check if ball is out the box height borders.
+     *
      * @param ball the ball to check if out of border.
      * @return true if the ball is out the box height borders, false otherwise.
      */
@@ -101,6 +109,7 @@ public class Box {
 
     /**
      * squeeze radius to fit the box size.
+     *
      * @param radius the radius to squeeze.
      * @return the squeezed radius.
      */
@@ -111,18 +120,25 @@ public class Box {
 
     /**
      * get random center point in the box, respectively to the box size.
+     *
      * @param radius the radius to fit the center point to the box.
      * @return good center point respectively to the radius.
      */
     public Point getRandomCenterPointInBox(int radius) {
         Random rand = new Random();
-        double xCenter = rand.nextDouble(this.leftEdge + radius, this.rightEdge - radius);
-        double yCenter = rand.nextDouble(this.topEdge + radius, this.bottomEdge - radius);
+        double ballLeftEdge = this.leftEdge + (double) radius;
+        double ballRightEdge = this.rightEdge - (double) radius;
+        double xCenter = ballLeftEdge + (ballRightEdge - ballLeftEdge) * rand.nextDouble();
+
+        double ballTopEdge = this.topEdge + (double) radius;
+        double ballBottomEdge = this.bottomEdge - (double) radius;
+        double yCenter = ballTopEdge + (ballBottomEdge - ballTopEdge) * rand.nextDouble();
         return new Point(xCenter, yCenter);
     }
 
     /**
      * generate random ball in the box borders.
+     *
      * @param radius the radius of the ball to generate.
      * @return ball in the box with the given radius. if the radius is too big for the box - return null.
      */

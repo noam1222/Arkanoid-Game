@@ -21,11 +21,11 @@ public class Ball {
      * @param r      radius of the ball.
      * @param color  color of the ball.
      */
-    public Ball(Point center, int r, java.awt.Color color) {
+    public Ball(Point center, int r, Color color) {
         this.center = center;
         this.radius = r;
         this.color = color;
-        // if not assign velocity - not move
+        // if not assign  afterwards - the ball not move
         this.velocity = new Velocity(0, 0);
     }
 

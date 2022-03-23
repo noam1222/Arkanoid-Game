@@ -8,8 +8,8 @@ import biuoop.Sleeper;
  * handle animation of multiple balls in rectangle on the screen.
  */
 public class BoxOfBallsAnimation {
-    private Ball[] balls;
-    private Box box;
+    private final Ball[] balls;
+    private final Box box;
 
     /**
      * constructor - initialize BoxOfBallsAnimation object with multiple balls.
@@ -84,6 +84,6 @@ public class BoxOfBallsAnimation {
     public void animateBalls(GUI gui, DrawSurface surface, Sleeper sleeper) {
         this.drawBalls(surface);
         gui.show(surface);
-        sleeper.sleepFor(15);
+        sleeper.sleepFor(20);
     }
 }
