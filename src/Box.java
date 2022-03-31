@@ -87,8 +87,8 @@ public class Box {
      */
     public boolean isBallWidthOutOfBorder(Ball ball) {
         int radius = ball.getSize();
-        int ballLeftEdge = ball.getX() - radius;
-        int ballRightEdge = ball.getX() + radius;
+        int ballLeftEdge = ball.getX() - radius + 1;
+        int ballRightEdge = ball.getX() + radius - 1;
 
         return this.leftEdge >= ballLeftEdge || this.rightEdge <= ballRightEdge;
     }
@@ -101,8 +101,8 @@ public class Box {
      */
     public boolean isBallHeightOutOfBorder(Ball ball) {
         int radius = ball.getSize();
-        int ballBottomEdge = ball.getY() + radius;
-        int ballTopEdge = ball.getY() - radius;
+        int ballBottomEdge = ball.getY() + radius + 1;
+        int ballTopEdge = ball.getY() - radius - 1;
 
         return this.bottomEdge <= ballBottomEdge || this.topEdge >= ballTopEdge;
     }

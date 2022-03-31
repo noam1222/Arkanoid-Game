@@ -33,7 +33,7 @@ public class MultipleFramesBouncingBallsAnimation {
      *             and the second half in the second frame.</p>
      */
     public static void main(String[] args) {
-        GUI gui = new GUI("Multiple Frames Bouncing Balls", 700, 600);
+        GUI gui = new GUI("Multiple Frames Bouncing Balls", 700, 650);
         Sleeper sleeper = new Sleeper();
 
         //assuming args.length is even number.

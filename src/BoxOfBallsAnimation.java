@@ -84,6 +84,6 @@ public class BoxOfBallsAnimation {
     public void animateBalls(GUI gui, DrawSurface surface, Sleeper sleeper) {
         this.drawBalls(surface);
         gui.show(surface);
-        sleeper.sleepFor(20);
+        sleeper.sleepFor(50);
     }
 }
