@@ -6,6 +6,8 @@
 public class Point {
     private final double x;
     private final double y;
+    // epsilon to define double equal operation according to the assignment demands.
+    private static final double EPSILON = 1E-10;
 
     /**
      * constructor - assign the x, y who passed to this.x, this.y.
@@ -29,6 +31,17 @@ public class Point {
     }
 
     /**
+     * <p>new double equals operation (according to the assignment demands) -
+     * check if the difference between tow double numbers are less or equal to EPSILON.</p>
+     * @param num1 first number to check
+     * @param num2 second number to check
+     * @return true if the difference between the numbers are less or equal to epsilon, false otherwise.
+     */
+    public static boolean doubleEquals(double num1, double num2) {
+        return Math.abs(num1 - num2) <= EPSILON;
+    }
+
+    /**
      * check if 2 points are equal.
      * @param other the other point to check
      * @return true is the points are equal, false otherwise.
@@ -37,7 +50,7 @@ public class Point {
         if (other == null) {
             return false;
         }
-        return this.x == other.x && this.y == other.y;
+        return doubleEquals(this.x, other.x) && doubleEquals(this.y, other.y);
     }
 
     /**

@@ -77,7 +77,7 @@ public class Line {
      */
     private Double lineSlope() {
         //handle vertical line (no slope)
-        if (this.start.getX() == this.end.getX()) {
+        if (Point.doubleEquals(this.start.getX(), this.end.getX())) {
             return null;
         }
         // slope of straight line formula

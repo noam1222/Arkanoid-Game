@@ -10,7 +10,7 @@ import biuoop.Sleeper;
 public class MultipleBouncingBallsAnimation {
     // magic numbers
     private static final int BIG_BALLS_SIZE = 50;
-    private static final Box CURRENT_BOX = new Box(300, 400);
+    private static final Box CURRENT_BOX = new Box(400, 400);
 
     /**
      * generate the balls array in ascending speed order.
