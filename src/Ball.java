@@ -38,7 +38,7 @@ public class Ball {
      * @param r     radius of the ball.
      * @param color color of the ball.
      */
-    public Ball(double x, double y, int r, java.awt.Color color) {
+    public Ball(double x, double y, int r, Color color) {
         this(new Point(x, y), r, color);
     }
 
@@ -74,7 +74,7 @@ public class Ball {
      *
      * @return size of the color.
      */
-    public java.awt.Color getColor() {
+    public Color getColor() {
         return this.color;
     }
 
