@@ -1,3 +1,5 @@
+import biuoop.DrawSurface;
+
 import java.awt.Color;
 
 /**
@@ -27,10 +29,23 @@ public class Block implements Collidable {
     }
 
     /**
+     * draw the block on the surface.
+     * @param surface the surface to draw the block on.
+     */
+    public void drawOn(DrawSurface surface) {
+        surface.setColor(this.color);
+        int x = (int) this.blockSurface.getUpperLeft().getX();
+        int y = (int) this.blockSurface.getUpperLeft().getY();
+        int width = (int) this.blockSurface.getWidth();
+        int height = (int) this.blockSurface.getHeight();
+        surface.fillRectangle(x, y, width, height);
+    }
+
+    /**
      * get new velocity of object after collide with this block.
      * @param collisionPoint the collision point in the collidable object.
      * @param currentVelocity velocity of the object we collided with.
-     * @return
+     * @return the new velocity after the hit.
      */
     @Override
     public Velocity hit(Point collisionPoint, Velocity currentVelocity) {

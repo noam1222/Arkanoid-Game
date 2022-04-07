@@ -12,6 +12,7 @@ public class Ball {
     private int radius;
     private final Color color;
     private Velocity velocity;
+    private final GameEnvironment gameEnvironment;
 
     /**
      * <p>constructor - initialize the ball by center point, radius and color.\
@@ -20,13 +21,15 @@ public class Ball {
      * @param center center of the ball.
      * @param r      radius of the ball.
      * @param color  color of the ball.
+     * @param gameEnvironment the game environment of this ball.
      */
-    public Ball(Point center, int r, Color color) {
+    public Ball(Point center, int r, Color color, GameEnvironment gameEnvironment) {
         this.center = center;
         this.radius = r;
         this.color = color;
         // if not assign  afterwards - the ball not move
         this.velocity = new Velocity(0, 0);
+        this.gameEnvironment = gameEnvironment;
     }
 
     /**
@@ -37,9 +40,10 @@ public class Ball {
      * @param y     y value of the center point.
      * @param r     radius of the ball.
      * @param color color of the ball.
+     * @param gameEnvironment the game environment of this ball.
      */
-    public Ball(double x, double y, int r, Color color) {
-        this(new Point(x, y), r, color);
+    public Ball(double x, double y, int r, Color color, GameEnvironment gameEnvironment) {
+        this(new Point(x, y), r, color, gameEnvironment);
     }
 
     /**
@@ -96,6 +100,14 @@ public class Ball {
     }
 
     /**
+     * get this ball game environment.
+     * @return this ball game environment.
+     */
+    public GameEnvironment getGameEnvironment() {
+        return this.gameEnvironment;
+    }
+
+    /**
      * set the center of the ball.
      * @param center the new center to set.
      */
@@ -126,7 +138,17 @@ public class Ball {
      * move the ball one step further by the ball velocity.
      */
     public void moveOneStep() {
-        this.center = this.getVelocity().applyToPoint(this.center);
+        Point newCenter = this.getVelocity().applyToPoint(this.center);
+        Line trajectory = new Line(this.center, newCenter);
+        CollisionInfo collision = this.gameEnvironment.getClosestCollision(trajectory);
+        if (collision != null) {
+            // move the ball to just slightly before the hit point.
+            Point collisionPoint = collision.collisionPoint();
+            this.velocity = collision.collisionObject().hit(collisionPoint, this.velocity);
+            this.center = this.velocity.applyToPoint(this.center);
+        } else {
+            this.center = newCenter;
+        }
     }
 
     /**
