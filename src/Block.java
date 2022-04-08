@@ -5,14 +5,15 @@ import java.awt.Color;
 /**
  * collidable class - represent block.
  */
-public class Block implements Collidable {
+public class Block implements Collidable, Sprite {
     private final Rectangle blockSurface;
     private final Color color;
 
     /**
      * constructor of the block object.
+     *
      * @param blockSurface the rectangle shape and location of the block.
-     * @param color the color of the block.
+     * @param color        the color of the block.
      */
     public Block(Rectangle blockSurface, Color color) {
         this.blockSurface = blockSurface;
@@ -21,6 +22,7 @@ public class Block implements Collidable {
 
     /**
      * get the rectangle shape of the block.
+     *
      * @return the rectangle shape of the block.
      */
     @Override
@@ -29,21 +31,9 @@ public class Block implements Collidable {
     }
 
     /**
-     * draw the block on the surface.
-     * @param surface the surface to draw the block on.
-     */
-    public void drawOn(DrawSurface surface) {
-        surface.setColor(this.color);
-        int x = (int) this.blockSurface.getUpperLeft().getX();
-        int y = (int) this.blockSurface.getUpperLeft().getY();
-        int width = (int) this.blockSurface.getWidth();
-        int height = (int) this.blockSurface.getHeight();
-        surface.fillRectangle(x, y, width, height);
-    }
-
-    /**
      * get new velocity of object after collide with this block.
-     * @param collisionPoint the collision point in the collidable object.
+     *
+     * @param collisionPoint  the collision point in the collidable object.
      * @param currentVelocity velocity of the object we collided with.
      * @return the new velocity after the hit.
      */
@@ -63,5 +53,36 @@ public class Block implements Collidable {
             }
         }
         return newVelocity;
+    }
+
+    /**
+     * draw the block on the surface.
+     *
+     * @param surface the surface to draw the block on.
+     */
+    @Override
+    public void drawOn(DrawSurface surface) {
+        surface.setColor(this.color);
+        int x = (int) this.blockSurface.getUpperLeft().getX();
+        int y = (int) this.blockSurface.getUpperLeft().getY();
+        int width = (int) this.blockSurface.getWidth();
+        int height = (int) this.blockSurface.getHeight();
+        surface.fillRectangle(x, y, width, height);
+    }
+
+    /**
+     * notify the block that time has passed.
+     */
+    @Override
+    public void timePassed() {
+    }
+
+    /**
+     * add this block to Game object.
+     * @param g the Game object to add to.
+     */
+    public void addToGame(Game g) {
+        g.addCollidable(this);
+        g.addSprite(this);
     }
 }

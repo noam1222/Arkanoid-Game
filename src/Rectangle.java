@@ -94,4 +94,19 @@ public class Rectangle {
     public Line[] getBorder() {
         return this.border;
     }
+
+    /**
+     * check if received point is in this rectangle.
+     * @param p the point to check.
+     * @return true if the point in this rectangle, false otherwise.
+     */
+    public boolean isPointIn(Point p) {
+        if (p.getY() < this.border[0].start().getY() || p.getY() > this.border[2].start().getY()) {
+            return false;
+        }
+        if (p.getX() < this.border[3].start().getX() || p.getX() > this.border[1].start().getX()) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -7,7 +7,7 @@ import biuoop.DrawSurface;
 /**
  * represent ball.
  */
-public class Ball {
+public class Ball implements Sprite{
     private Point center;
     private int radius;
     private final Color color;
@@ -44,6 +44,14 @@ public class Ball {
      */
     public Ball(double x, double y, int r, Color color, GameEnvironment gameEnvironment) {
         this(new Point(x, y), r, color, gameEnvironment);
+    }
+
+    /**
+     * get the center of this ball.
+     * @return the center of this ball.
+     */
+    public Point getCenter() {
+        return this.center;
     }
 
     /**
@@ -152,12 +160,29 @@ public class Ball {
     }
 
     /**
+     * notify the ball that time has passed.
+     */
+    @Override
+    public void timePassed() {
+        this.moveOneStep();
+    }
+
+    /**
      * draw the ball on the given DrawSurface.
      *
      * @param surface the surface to draw in.
      */
+    @Override
     public void drawOn(DrawSurface surface) {
         surface.setColor(this.color);
         surface.fillCircle(this.getX(), this.getY(), this.radius);
+    }
+
+    /**
+     * add this ball to Game object.
+     * @param g the Game object to add to.
+     */
+    public void addToGame(Game g) {
+        g.addSprite(this);
     }
 }
