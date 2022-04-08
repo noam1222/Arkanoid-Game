@@ -32,6 +32,15 @@ public class Velocity {
     }
 
     /**
+     * get the speed of this velocity.
+     * @return the speed of this velocity.
+     */
+    public double getSpeed() {
+        // Pythagorean theorem
+        return Math.sqrt(this.dx * this.dx + this.dy * this.dy);
+    }
+
+    /**
      * get dx parameter.
      *
      * @return dx parameter.
@@ -51,6 +60,7 @@ public class Velocity {
 
     /**
      * set the dy parameter.
+     *
      * @param dx new dx to set.
      */
     public void setDx(double dx) {
@@ -59,6 +69,7 @@ public class Velocity {
 
     /**
      * set the dy parameter.
+     *
      * @param dy new dy to set.
      */
     public void setDy(double dy) {

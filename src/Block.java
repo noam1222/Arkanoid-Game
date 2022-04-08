@@ -31,6 +31,14 @@ public class Block implements Collidable, Sprite {
     }
 
     /**
+     * get this block color.
+     * @return this block color.
+     */
+    public Color getColor() {
+        return this.color;
+    }
+
+    /**
      * get new velocity of object after collide with this block.
      *
      * @param collisionPoint  the collision point in the collidable object.

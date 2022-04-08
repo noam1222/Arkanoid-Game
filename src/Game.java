@@ -9,8 +9,8 @@ import java.awt.Color;
  * class of Arkanoid game handler.
  */
 public class Game {
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = 600;
+    private static final int SCREEN_WIDTH = 800;
+    private static final int SCREEN_HEIGHT = 600;
     private static final int BORDER_THICK = 10;
 
     private final SpriteCollection sprites;
@@ -46,10 +46,10 @@ public class Game {
      * @return Block array of the screen blocks that restrict the borders of this game.
      */
     private Block[] getScreenBlockBorders() {
-        Rectangle u = new Rectangle(new Point(0, 0), WIDTH, BORDER_THICK);
-        Rectangle r = new Rectangle(new Point(WIDTH - BORDER_THICK, 0), BORDER_THICK, HEIGHT);
-        Rectangle l = new Rectangle(new Point(0, 0), BORDER_THICK, HEIGHT);
-        Rectangle d = new Rectangle(new Point(0, HEIGHT - BORDER_THICK), WIDTH, BORDER_THICK);
+        Rectangle u = new Rectangle(new Point(0, 0), SCREEN_WIDTH, BORDER_THICK);
+        Rectangle r = new Rectangle(new Point(SCREEN_WIDTH - BORDER_THICK, 0), BORDER_THICK, SCREEN_HEIGHT);
+        Rectangle l = new Rectangle(new Point(0, 0), BORDER_THICK, SCREEN_HEIGHT);
+        Rectangle d = new Rectangle(new Point(0, SCREEN_HEIGHT - BORDER_THICK), SCREEN_WIDTH, BORDER_THICK);
         Block up = new Block(u, Color.BLACK);
         Block right = new Block(r, Color.BLACK);
         Block down = new Block(l, Color.BLACK);
@@ -63,7 +63,7 @@ public class Game {
      * @return true if the point is out of borders, false otherwise.
      */
     private boolean isOutOfBorders(Point p) {
-        return p.getX() < 0 || p.getX() > WIDTH || p.getY() < 0 || p.getY() >  HEIGHT;
+        return p.getX() < 0 || p.getX() > SCREEN_WIDTH || p.getY() < 0 || p.getY() > SCREEN_HEIGHT;
     }
 
     /**
@@ -74,20 +74,40 @@ public class Game {
         java.util.Random random = new java.util.Random();
         Point p;
         do {
-            double x = random.nextDouble() * WIDTH;
-            double y = random.nextDouble() * HEIGHT;
+            double x = random.nextDouble() * SCREEN_WIDTH;
+            double y = random.nextDouble() * SCREEN_HEIGHT;
             p = new Point(x, y);
         } while (!this.environment.isFreePoint(p));
         return p;
     }
 
-
+    private Block getPaddleBlock(int paddleWidth, int paddleHeight, Color color) {
+        Point upperLeft = new Point(SCREEN_WIDTH / 2.0 - paddleWidth / 2.0,
+                SCREEN_HEIGHT - BORDER_THICK - paddleHeight);
+        Rectangle paddleRectangle = new Rectangle(upperLeft, paddleWidth, paddleHeight);
+        return new Block(paddleRectangle, color);
+    }
 
     /**
      * // Initialize a new game: create the necessary objects and add them to the game.
      */
     public void initialize() {
-        this.gui = new GUI("Arkanoid", WIDTH, HEIGHT);
+        this.gui = new GUI("Arkanoid", SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        Block paddleBlock =  this.getPaddleBlock(100, 20, Color.orange);
+        Paddle paddle = new Paddle(gui.getKeyboardSensor(), paddleBlock, 0 + BORDER_THICK,
+                SCREEN_WIDTH - BORDER_THICK, 10);
+        paddle.addToGame(this);
+
+        new Block(new Rectangle(new Point(650, 400), 50, 50), Color.darkGray).addToGame(this);
+        new Block(new Rectangle(new Point(50, 400), 25, 50), Color.orange).addToGame(this);
+        new Block(new Rectangle(new Point(300, 300), 100, 25), Color.magenta).addToGame(this);
+        new Block(new Rectangle(new Point(85, 75), 10, 10), Color.CYAN).addToGame(this);
+
+        for (Block b : this.getScreenBlockBorders()) {
+            b.addToGame(this);
+        }
+
 
         ArrayList<Ball> balls = new ArrayList<>();
 
@@ -103,15 +123,6 @@ public class Game {
         Ball b4 = new Ball(600, 450, 10, Color.pink, this.environment);
         b4.setVelocity(5, 7);
         balls.add(b4);
-
-        new Block(new Rectangle(new Point(650, 400), 50, 50), Color.darkGray).addToGame(this);
-        new Block(new Rectangle(new Point(50, 400), 25, 50), Color.orange).addToGame(this);
-        new Block(new Rectangle(new Point(300, 300), 100, 25), Color.magenta).addToGame(this);
-        new Block(new Rectangle(new Point(85, 75), 10, 10), Color.CYAN).addToGame(this);
-
-        for (Block b : this.getScreenBlockBorders()) {
-            b.addToGame(this);
-        }
 
         for (Ball ball : balls) {
             if (!this.environment.isFreePoint(ball.getCenter()) || isOutOfBorders(ball.getCenter())) {
