@@ -1,3 +1,5 @@
+// 209407162 Noam Maimon
+
 import biuoop.DrawSurface;
 
 import java.awt.Color;
@@ -75,7 +77,11 @@ public class Block implements Collidable, Sprite {
         int y = (int) this.blockSurface.getUpperLeft().getY();
         int width = (int) this.blockSurface.getWidth();
         int height = (int) this.blockSurface.getHeight();
+        surface.setColor(this.color);
         surface.fillRectangle(x, y, width, height);
+        surface.setColor(Color.black);
+        surface.drawRectangle(x, y, width, height);
+
     }
 
     /**

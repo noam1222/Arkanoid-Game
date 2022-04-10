@@ -7,7 +7,7 @@ import biuoop.DrawSurface;
 /**
  * represent ball.
  */
-public class Ball implements Sprite{
+public class Ball implements Sprite {
     private Point center;
     private int radius;
     private final Color color;
@@ -18,9 +18,9 @@ public class Ball implements Sprite{
      * <p>constructor - initialize the ball by center point, radius and color.\
      * initially the velocity of the ball is 0.</p>
      *
-     * @param center center of the ball.
-     * @param r      radius of the ball.
-     * @param color  color of the ball.
+     * @param center          center of the ball.
+     * @param r               radius of the ball.
+     * @param color           color of the ball.
      * @param gameEnvironment the game environment of this ball.
      */
     public Ball(Point center, int r, Color color, GameEnvironment gameEnvironment) {
@@ -36,10 +36,10 @@ public class Ball implements Sprite{
      * <p>constructor - initialize the ball by x and y value as tth center point, radius and color.\
      * initially the velocity of the ball is 0.</p>
      *
-     * @param x     x value of the center point.
-     * @param y     y value of the center point.
-     * @param r     radius of the ball.
-     * @param color color of the ball.
+     * @param x               x value of the center point.
+     * @param y               y value of the center point.
+     * @param r               radius of the ball.
+     * @param color           color of the ball.
      * @param gameEnvironment the game environment of this ball.
      */
     public Ball(double x, double y, int r, Color color, GameEnvironment gameEnvironment) {
@@ -48,6 +48,7 @@ public class Ball implements Sprite{
 
     /**
      * get the center of this ball.
+     *
      * @return the center of this ball.
      */
     public Point getCenter() {
@@ -101,6 +102,7 @@ public class Ball implements Sprite{
 
     /**
      * set the size of the ball.
+     *
      * @param radius the new size to set.
      */
     public void setSize(int radius) {
@@ -109,6 +111,7 @@ public class Ball implements Sprite{
 
     /**
      * get this ball game environment.
+     *
      * @return this ball game environment.
      */
     public GameEnvironment getGameEnvironment() {
@@ -117,6 +120,7 @@ public class Ball implements Sprite{
 
     /**
      * set the center of the ball.
+     *
      * @param center the new center to set.
      */
     public void setCenter(Point center) {
@@ -150,12 +154,16 @@ public class Ball implements Sprite{
         Line trajectory = new Line(this.center, newCenter);
         CollisionInfo collision = this.gameEnvironment.getClosestCollision(trajectory);
         if (collision != null) {
-            // move the ball to just slightly before the hit point.
             Point collisionPoint = collision.collisionPoint();
             this.velocity = collision.collisionObject().hit(collisionPoint, this.velocity);
-            this.center = this.velocity.applyToPoint(this.center);
         } else {
             this.center = newCenter;
+        }
+        // check if paddle go into ball
+        int dangerZone = Constants.SCREEN_HEIGHT - Constants.SCREEN_BORDERS_THICK - Constants.PADDLE_HEIGHT;
+        if (this.getY() >= dangerZone && !this.gameEnvironment.isFreePoint(this.center)) {
+            this.center = this.center.getPointInDistance(0, -Constants.PADDLE_HEIGHT - 1);
+            this.velocity.setDy(-Math.abs(this.velocity.getDy()));
         }
     }
 
@@ -174,12 +182,15 @@ public class Ball implements Sprite{
      */
     @Override
     public void drawOn(DrawSurface surface) {
+        surface.setColor(Color.black);
+        surface.drawCircle(this.getX(), this.getY(), this.radius);
         surface.setColor(this.color);
         surface.fillCircle(this.getX(), this.getY(), this.radius);
     }
 
     /**
      * add this ball to Game object.
+     *
      * @param g the Game object to add to.
      */
     public void addToGame(Game g) {

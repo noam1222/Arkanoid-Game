@@ -1,7 +1,5 @@
 // 209407162 Noam Maimon
 
-import java.util.ArrayList;
-
 /**
  * class who describe point in two-dimensional space.
  */
@@ -84,7 +82,7 @@ public class Point {
     /**
      * get the closest point from tow points to this point.
      * @param p1 first point to check.
-     * @param p1 second point to check.
+     * @param p2 second point to check.
      * @return the closest point to this.
      */
     public Point getClosestPoint(Point p1, Point p2) {

@@ -1,7 +1,5 @@
 // 209407162 Noam Maimon
 
-import java.util.ArrayList;
-
 /**
  * class who represent line between tow points.
  */
@@ -93,7 +91,7 @@ public class Line {
      * @return the line constant
      */
     private double lineConstant(double slope) {
-        if (Point.doubleEquals(slope, 0.0)) {
+        if (Point.doubleEquals(slope, 0)) {
             return this.start.getY();
         }
         /* from equation of a line formula:
@@ -171,7 +169,6 @@ public class Line {
         }
         if (this.lineSlope() != null && other.lineSlope() != null) {
             return Point.doubleEquals(this.lineSlope(), other.lineSlope());
-            //return this.lineSlope().equals(other.lineSlope());
         }
         return false;
     }
@@ -194,7 +191,7 @@ public class Line {
         boolean b1 = biggerX >= p.getX() || Point.doubleEquals(biggerX, p.getX());
         boolean b2 = p.getX() >= smallerX || Point.doubleEquals(smallerX, p.getX());
         boolean b3 = biggerY >= p.getY() || Point.doubleEquals(biggerY, p.getY());
-        boolean b4 = p.getY() >= smallerY || Point.doubleEquals(smallerX, p.getY());
+        boolean b4 = p.getY() >= smallerY || Point.doubleEquals(smallerY, p.getY());
         return b1 && b2 && b3 && b4;
     }
 
@@ -274,7 +271,6 @@ public class Line {
         }
         return null;
     }
-
 
 
     /**

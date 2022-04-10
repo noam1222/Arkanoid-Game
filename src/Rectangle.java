@@ -1,3 +1,5 @@
+// 209407162 Noam Maimon
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,11 +50,8 @@ public class Rectangle {
         Point p2 = reverseLine.closestIntersectionToStartOfLine(this);
         if (p1 != null) {
             intersectionsList.add(p1);
-            if (p2 != null) {
-                // if this line parallel to border so there is only one intersection point.
-                if (p1.getX() != p2.getX() && p1.getY() != p2.getY()) {
-                    intersectionsList.add(p2);
-                }
+            if (p2 != null && !p1.equals(p2)) {
+                intersectionsList.add(p2);
             }
         }
         return intersectionsList;
@@ -97,14 +96,20 @@ public class Rectangle {
 
     /**
      * check if received point is in this rectangle.
+     *
      * @param p the point to check.
      * @return true if the point in this rectangle, false otherwise.
      */
     public boolean isPointIn(Point p) {
-        if (p.getY() < this.border[0].start().getY() || p.getY() > this.border[2].start().getY()) {
+        for (Line bord : this.border) {
+            if (bord.isPointInLine(p)) {
+                return true;
+            }
+        }
+        if (p.getY() <= this.border[0].start().getY() || p.getY() >= this.border[2].start().getY()) {
             return false;
         }
-        if (p.getX() < this.border[3].start().getX() || p.getX() > this.border[1].start().getX()) {
+        if (p.getX() <= this.border[3].start().getX() || p.getX() >= this.border[1].start().getX()) {
             return false;
         }
         return true;

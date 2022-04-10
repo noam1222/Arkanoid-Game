@@ -1,11 +1,12 @@
+// 209407162 Noam Maimon
+
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * class that represent the game environment with all the collidables object in the game.
  */
 public class GameEnvironment {
-    private ArrayList<Collidable> collidables;
+    private final ArrayList<Collidable> collidables;
 
     /**
      * constructor - initialize the game environment with no collidables objects.
