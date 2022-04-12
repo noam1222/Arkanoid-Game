@@ -148,8 +148,8 @@ public class Game {
 
         // initialize balls
         ArrayList<Ball> balls = new ArrayList<>();
-        Ball b1 = new Ball(400, 400, 5, Color.yellow, this.environment);
-        b1.setVelocity(7, -7);
+        Ball b1 = new Ball(250, 50, 5, Color.yellow, this.environment);
+        b1.setVelocity(10, 5);
         balls.add(b1);
         Ball b2 = new Ball(400, 600, 5, Color.green, this.environment);
         b2.setVelocity(5, 5);

@@ -155,6 +155,12 @@ public class Ball implements Sprite {
         CollisionInfo collision = this.gameEnvironment.getClosestCollision(trajectory);
         if (collision != null) {
             Point collisionPoint = collision.collisionPoint();
+            double moveX = collisionPoint.getX() - this.center.getX();
+            moveX -= Math.signum(moveX) * 1;
+            double moveY = collisionPoint.getY() - this.center.getY();
+            moveY -= Math.signum(moveY) * 1;
+            Velocity nearHit = new Velocity(moveX, moveY);
+            this.center = nearHit.applyToPoint(this.center);
             this.velocity = collision.collisionObject().hit(collisionPoint, this.velocity);
         } else {
             this.center = newCenter;
