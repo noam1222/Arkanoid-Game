@@ -1,3 +1,7 @@
+// 209407162 Noam Maimon
+
+package notification;
+
 /**
  * interface that indicate that objects that implement it send notifications when they are being hit.
  */

@@ -1,7 +1,11 @@
 // 209407162 Noam Maimon
 
+package Helpers;
+
+import Geometry.Point;
+
 /**
- * Velocity specifies the change in position on the `x` and the `y` axes.
+ * Helpers.Velocity specifies the change in position on the `x` and the `y` axes.
  */
 public class Velocity {
     private double dx;
@@ -19,11 +23,11 @@ public class Velocity {
     }
 
     /**
-     * convert angle and speed of ball to Velocity object.
+     * convert angle and speed of ball to Helpers.Velocity object.
      *
      * @param angle the angle of the ball.
      * @param speed the speed of the ball.
-     * @return new Velocity object of the receiving angle and speed.
+     * @return new Helpers.Velocity object of the receiving angle and speed.
      */
     public static Velocity fromAngleAndSpeed(double angle, double speed) {
         double dx = speed * Math.sin(Math.toRadians(angle));

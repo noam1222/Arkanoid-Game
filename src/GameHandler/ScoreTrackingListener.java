@@ -1,3 +1,12 @@
+// 209407162 Noam Maimon
+
+package GameHandler;
+
+import Collidables.Block;
+import Helpers.Counter;
+import Sprites.Ball;
+import notification.HitListener;
+
 /**
  * class that in charge of score tracking in the Arkanoid game.
  */
@@ -15,7 +24,7 @@ public class ScoreTrackingListener implements HitListener {
     /**
      * add 5 points to score when ball hit block.
      * @param beingHit the block that being hit.
-     * @param hitter the Ball that's doing the hitting.
+     * @param hitter the Sprites.Ball that's doing the hitting.
      */
     @Override
     public void hitEvent(Block beingHit, Ball hitter) {

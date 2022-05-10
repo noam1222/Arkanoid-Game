@@ -1,5 +1,12 @@
 // 209407162 Noam Maimon
 
+package Collidables;
+
+import Geometry.Point;
+import Geometry.Rectangle;
+import Helpers.Velocity;
+import Sprites.Ball;
+
 /**
  * interface of collidable objects.
  */

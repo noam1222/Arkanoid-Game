@@ -1,9 +1,16 @@
+// 209407162 Noam Maimon
+
+package Sprites;
+
+import Helpers.Constants;
+import Helpers.Counter;
+
 import biuoop.DrawSurface;
 
 import java.awt.Color;
 
 /**
- * class that indicate the score of the player in the Arkanoid game by implement the Sprite interface.
+ * class that indicate the score of the player in the Arkanoid game by implement the Sprites.Sprite interface.
  */
 public class ScoreIndicator implements Sprite {
     private static final int FONT_SIZE = 50;

@@ -1,6 +1,17 @@
 // 209407162 Noam Maimon
 
+package Collidables;
+
+import GameHandler.Game;
+import Geometry.Line;
+import Geometry.Point;
+import Geometry.Rectangle;
+import Helpers.Velocity;
+import Sprites.Ball;
+import Sprites.Sprite;
 import biuoop.DrawSurface;
+import notification.HitListener;
+import notification.HitNotifier;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -91,9 +102,9 @@ public class Block implements Collidable, Sprite, HitNotifier {
     }
 
     /**
-     * add this block to Game object.
+     * add this block to Game.Game object.
      *
-     * @param g the Game object to add to.
+     * @param g the Game.Game object to add to.
      */
     public void addToGame(Game g) {
         g.addCollidable(this);

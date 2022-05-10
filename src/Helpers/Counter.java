@@ -1,3 +1,7 @@
+// 209407162 Noam Maimon
+
+package Helpers;
+
 /**
  * class for counting things.
  */
@@ -25,7 +29,7 @@ public class Counter {
      *
      * @param number number to add tp this counter.
      */
-    void increase(int number) {
+    public void increase(int number) {
         this.counter += number;
     }
 
@@ -34,7 +38,7 @@ public class Counter {
      *
      * @param number number to subtract from this counter.
      */
-    void decrease(int number) {
+    public void decrease(int number) {
         this.counter -= number;
     }
 
@@ -43,7 +47,7 @@ public class Counter {
      *
      * @return current count.
      */
-    int getValue() {
+    public int getValue() {
         return this.counter;
     }
 }

@@ -1,3 +1,12 @@
+// 209407162 Noam Maimon
+
+package GameHandler;
+
+import Collidables.Block;
+import Helpers.Counter;
+import Sprites.Ball;
+import notification.HitListener;
+
 /**
  * class that in charge of removing blocks from the game, as well as keeping count of the number of blocks that remain.
  */
@@ -18,7 +27,7 @@ public class BlockRemover implements HitListener {
     /**
      * remove the receiving block from the game.
      * @param beingHit the block that being hit.
-     * @param hitter the Ball that hit.
+     * @param hitter the Sprites.Ball that hit.
      */
     @Override
     public void hitEvent(Block beingHit, Ball hitter) {

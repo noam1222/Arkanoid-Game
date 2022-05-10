@@ -1,5 +1,7 @@
 // 209407162 Noam Maimon
 
+package Geometry;
+
 /**
  * class who describe point in two-dimensional space.
  */
@@ -73,7 +75,7 @@ public class Point {
      * get point with received distance from this point.
      * @param width the x-axis distance.
      * @param height the y-axis distance.
-     * @return new Point of received distance from this point.
+     * @return new Geometry.Point of received distance from this point.
      */
     public Point getPointInDistance(double width, double height) {
         return new Point(this.getX() + width, this.getY() + height);

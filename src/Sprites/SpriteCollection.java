@@ -1,5 +1,7 @@
 // 209407162 Noam Maimon
 
+package Sprites;
+
 import biuoop.DrawSurface;
 
 import java.util.ArrayList;

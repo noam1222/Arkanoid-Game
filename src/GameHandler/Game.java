@@ -1,5 +1,19 @@
 // 209407162 Noam Maimon
 
+package GameHandler;
+
+import Collidables.Block;
+import Collidables.Collidable;
+import Collidables.GameEnvironment;
+import Geometry.Point;
+import Geometry.Rectangle;
+import Helpers.Constants;
+import Helpers.Counter;
+import Sprites.Ball;
+import Sprites.Paddle;
+import Sprites.ScoreIndicator;
+import Sprites.Sprite;
+import Sprites.SpriteCollection;
 import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.Sleeper;
@@ -28,7 +42,7 @@ public class Game {
 
     /**
      * <p>constructor - initialize this game object with received screen width and height,
-     * and new SpriteCollection and GameEnvironment objects.</p>
+     * and new Sprites.SpriteCollection and GameEnvironment objects.</p>
      *
      * @param screenWidth  the game screen width.
      * @param screenHeight the game screen height.
@@ -72,9 +86,9 @@ public class Game {
     }
 
     /**
-     * add Sprite object to the sprites of this game.
+     * add Sprites.Sprite object to the sprites of this game.
      *
-     * @param s Sprite object to add.
+     * @param s Sprites.Sprite object to add.
      */
     public void addSprite(Sprite s) {
         this.sprites.addSprite(s);

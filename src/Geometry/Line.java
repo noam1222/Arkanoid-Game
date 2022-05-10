@@ -1,5 +1,7 @@
 // 209407162 Noam Maimon
 
+package Geometry;
+
 /**
  * class who represent line between tow points.
  */
@@ -20,7 +22,7 @@ public class Line {
 
     /**
      * <p>constructor - initialize the start point of the line and the start point of the line
-     * by the passed arguments by convert them to Point type.</p>
+     * by the passed arguments by convert them to Geometry.Point type.</p>
      *
      * @param x1 x value of the start point of the line
      * @param y1 y value of the start point of the line

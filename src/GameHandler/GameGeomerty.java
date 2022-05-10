@@ -1,3 +1,13 @@
+// 209407162 Noam Maimon
+
+package GameHandler;
+
+import Collidables.Block;
+import Collidables.GameEnvironment;
+import Geometry.Point;
+import Geometry.Rectangle;
+import Helpers.Constants;
+
 import java.awt.Color;
 
 /**

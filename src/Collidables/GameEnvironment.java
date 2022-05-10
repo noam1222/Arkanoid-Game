@@ -1,5 +1,10 @@
 // 209407162 Noam Maimon
 
+package Collidables;
+
+import Geometry.Line;
+import Geometry.Point;
+
 import java.util.ArrayList;
 import java.util.List;
 

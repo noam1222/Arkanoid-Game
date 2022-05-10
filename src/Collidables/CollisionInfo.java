@@ -1,5 +1,9 @@
 // 209407162 Noam Maimon
 
+package Collidables;
+
+import Geometry.Point;
+
 /**
  * class that contain collision info of object with other collidable object.
  */

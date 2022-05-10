@@ -1,7 +1,16 @@
 // 209407162 Noam Maimon
 
+package Sprites;
+
 import java.awt.Color;
 
+import Collidables.CollisionInfo;
+import Collidables.GameEnvironment;
+import GameHandler.Game;
+import Geometry.Line;
+import Geometry.Point;
+import Helpers.Constants;
+import Helpers.Velocity;
 import biuoop.DrawSurface;
 
 /**
@@ -195,9 +204,9 @@ public class Ball implements Sprite {
     }
 
     /**
-     * add this ball to Game object.
+     * add this ball to Game.Game object.
      *
-     * @param g the Game object to add to.
+     * @param g the Game.Game object to add to.
      */
     public void addToGame(Game g) {
         g.addSprite(this);

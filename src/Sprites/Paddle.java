@@ -1,12 +1,20 @@
 // 209407162 Noam Maimon
 
+package Sprites;
+
+import Collidables.Block;
+import Collidables.Collidable;
+import GameHandler.Game;
+import Geometry.Point;
+import Geometry.Rectangle;
+import Helpers.Velocity;
 import biuoop.DrawSurface;
 import biuoop.KeyboardSensor;
 
 import java.awt.Color;
 
 /**
- * Paddle class - block who can move in the screen and also act different in case of hit by ball.
+ * Sprites.Paddle class - block who can move in the screen and also act different in case of hit by ball.
  */
 public class Paddle implements Sprite, Collidable {
     private final int paddleMovement;
@@ -127,7 +135,7 @@ public class Paddle implements Sprite, Collidable {
     /**
      * add this paddle to game g.
      *
-     * @param g the Game object to add this paddle to.
+     * @param g the Game.Game object to add this paddle to.
      */
     public void addToGame(Game g) {
         g.addCollidable(this);
