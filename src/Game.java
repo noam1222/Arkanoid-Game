@@ -20,6 +20,9 @@ public class Game {
 
     private GUI gui;
 
+    private final Counter blocksCounter;
+    private final Counter ballsCounter;
+
     /**
      * <p>constructor - initialize this game object with received screen width and height,
      * and new SpriteCollection and GameEnvironment objects.</p>
@@ -32,6 +35,8 @@ public class Game {
         this.screenHeight = screenHeight;
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
+        this.blocksCounter = new Counter();
+        this.ballsCounter = new Counter();
     }
 
     /**
@@ -41,6 +46,24 @@ public class Game {
      */
     public void addCollidable(Collidable c) {
         this.environment.addCollidable(c);
+    }
+
+    /**
+     * remove the given collidable from this game.
+     *
+     * @param c collidable object to remove.
+     */
+    public void removeCollidable(Collidable c) {
+        this.environment.removeCollidable(c);
+    }
+
+    /**
+     * remove given sprite from this game.
+     *
+     * @param s sprite object to remove.
+     */
+    public void removeSprite(Sprite s) {
+        this.sprites.removeSprite(s);
     }
 
     /**
@@ -116,6 +139,7 @@ public class Game {
      */
     public void initialize() {
         this.gui = new GUI("Arkanoid", screenWidth, screenHeight);
+        BlockRemover blockRemover = new BlockRemover(this, this.blocksCounter);
 
         // initialize paddle
         Block paddleBlock = this.getPaddleBlock(100, Constants.PADDLE_HEIGHT, Color.orange);
@@ -141,6 +165,8 @@ public class Game {
                 Rectangle rect = new Rectangle(upLeft, blockWidth, blockHeight);
                 blocks[i] = new Block(rect, color);
                 blocks[i].addToGame(this);
+                blocks[i].addHitListener(blockRemover);
+                this.blocksCounter.increase(1);
                 upLeft = upLeft.getPointInDistance(blockWidth, 0);
             }
             lineHeight += blockHeight;
@@ -154,12 +180,16 @@ public class Game {
         Ball b2 = new Ball(400, 600, 5, Color.green, this.environment);
         b2.setVelocity(5, 5);
         balls.add(b2);
+        Ball b3 = new Ball(400, 700, 15, Color.red, this.environment);
+        b3.setVelocity(5, -5);
+        balls.add(b3);
 
         for (Ball ball : balls) {
             if (!this.environment.isFreePoint(ball.getCenter()) || isOutOfBorders(ball.getCenter())) {
                 ball.setCenter(this.getRandomFreePoint());
             }
             ball.addToGame(this);
+            this.ballsCounter.increase(1);
         }
     }
 
@@ -185,6 +215,12 @@ public class Game {
             long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
             if (milliSecondLeftToSleep > 0) {
                 sleeper.sleepFor(milliSecondLeftToSleep);
+            }
+
+            // check for end of the game
+            if (this.blocksCounter.getValue() == 0 || this.ballsCounter.getValue() == 0) {
+                this.gui.close();
+                return;
             }
         }
     }

@@ -161,7 +161,7 @@ public class Ball implements Sprite {
             moveY -= Math.signum(moveY) * 1;
             Velocity nearHit = new Velocity(moveX, moveY);
             this.center = nearHit.applyToPoint(this.center);
-            this.velocity = collision.collisionObject().hit(collisionPoint, this.velocity);
+            this.velocity = collision.collisionObject().hit(this, collisionPoint, this.velocity);
         } else {
             this.center = newCenter;
         }
@@ -201,5 +201,13 @@ public class Ball implements Sprite {
      */
     public void addToGame(Game g) {
         g.addSprite(this);
+    }
+
+    /**
+     * remove this ball from receiving game object.
+     * @param g game object to remove from.
+     */
+    public void removeFromGame(Game g) {
+        g.removeSprite(this);
     }
 }

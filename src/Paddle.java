@@ -86,6 +86,7 @@ public class Paddle implements Sprite, Collidable {
     /**
      * notify this paddle that ball hit him.
      *
+     * @param hitter the ball that hit this sprite.
      * @param collisionPoint  the collision point in the collidable object.
      * @param currentVelocity velocity of the object we collided with.
      * @return <p>new velocity of the ball:<br/>
@@ -97,7 +98,7 @@ public class Paddle implements Sprite, Collidable {
      * - if hit in the sides of this paddle: act like regular Block object.</p>
      */
     @Override
-    public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+    public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
         double paddleWidth = this.paddleBlock.getCollisionRectangle().getWidth();
         double region = paddleWidth / 5;
         double collisionXInRelationToPaddle = collisionPoint.getX()
@@ -116,7 +117,7 @@ public class Paddle implements Sprite, Collidable {
             currentVelocity = Velocity.fromAngleAndSpeed(60, speed);
         } else {
             // hit vertical borders of paddle
-            currentVelocity = this.paddleBlock.hit(collisionPoint, currentVelocity);
+            currentVelocity = this.paddleBlock.hit(hitter, collisionPoint, currentVelocity);
         }
         currentVelocity.setDy(-Math.abs(currentVelocity.getDy()));
 
