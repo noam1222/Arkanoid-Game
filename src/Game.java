@@ -83,15 +83,22 @@ public class Game {
     private Block[] getScreenBlockBorders() {
         Rectangle u = new Rectangle(new Point(BORDER_THICK, 0), screenWidth - 2 * BORDER_THICK, BORDER_THICK);
         Rectangle r = new Rectangle(new Point(screenWidth - BORDER_THICK, 0), BORDER_THICK, screenHeight);
-        Rectangle d = new Rectangle(new Point(BORDER_THICK, screenHeight - BORDER_THICK),
-                screenWidth - 2 * BORDER_THICK, BORDER_THICK);
         Rectangle l = new Rectangle(new Point(0, 0), BORDER_THICK, screenHeight);
         Color borderColor = Color.gray;
         Block up = new Block(u, borderColor);
         Block right = new Block(r, borderColor);
-        Block bottom = new Block(d, borderColor);
         Block left = new Block(l, borderColor);
-        return new Block[]{up, right, left, bottom};
+        return new Block[]{up, right, left};
+    }
+
+    /**
+     * get the death bottom zone for the balls.
+     * @return block in the start of the death zone.
+     */
+    private Block getDeathBlock() {
+        Rectangle death = new Rectangle(new Point(BORDER_THICK, screenHeight),
+                screenWidth - BORDER_THICK, 1);
+        return new Block(death, Constants.SCREEN_COLOR);
     }
 
     /**
@@ -128,8 +135,7 @@ public class Game {
      * @return the paddle block object of this game.
      */
     private Block getPaddleBlock(int paddleWidth, int paddleHeight, Color color) {
-        Point upperLeft = new Point(screenWidth / 2.0 - paddleWidth / 2.0,
-                screenHeight - BORDER_THICK - paddleHeight);
+        Point upperLeft = new Point(screenWidth / 2.0 - paddleWidth / 2.0, screenHeight - paddleHeight);
         Rectangle paddleRectangle = new Rectangle(upperLeft, paddleWidth, paddleHeight);
         return new Block(paddleRectangle, color);
     }
@@ -140,6 +146,7 @@ public class Game {
     public void initialize() {
         this.gui = new GUI("Arkanoid", screenWidth, screenHeight);
         BlockRemover blockRemover = new BlockRemover(this, this.blocksCounter);
+        BallRemover ballRemover = new BallRemover(this, this.ballsCounter);
 
         // initialize paddle
         Block paddleBlock = this.getPaddleBlock(100, Constants.PADDLE_HEIGHT, Color.orange);
@@ -151,6 +158,10 @@ public class Game {
         for (Block b : this.getScreenBlockBorders()) {
             b.addToGame(this);
         }
+
+        Block deathBlock = this.getDeathBlock();
+        deathBlock.addToGame(this);
+        deathBlock.addHitListener(ballRemover);
 
         // initialize ass 3 collidables blocks
         int lineHeight = screenHeight / 4;
@@ -180,7 +191,7 @@ public class Game {
         Ball b2 = new Ball(400, 600, 5, Color.green, this.environment);
         b2.setVelocity(5, 5);
         balls.add(b2);
-        Ball b3 = new Ball(400, 700, 15, Color.red, this.environment);
+        Ball b3 = new Ball(400, 700, 10, Color.red, this.environment);
         b3.setVelocity(5, -5);
         balls.add(b3);
 
@@ -204,7 +215,7 @@ public class Game {
             long startTime = System.currentTimeMillis(); // timing
 
             DrawSurface d = this.gui.getDrawSurface();
-            d.setColor(Color.blue);
+            d.setColor(Constants.SCREEN_COLOR);
             d.fillRectangle(0, 0, screenWidth, screenHeight);
             this.sprites.drawAllOn(d);
             this.gui.show(d);

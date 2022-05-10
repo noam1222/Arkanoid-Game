@@ -18,8 +18,9 @@ public class BlockRemover implements HitListener {
     /**
      * remove the receiving block from the game.
      * @param beingHit the block that being hit.
-     * @param hitter the Ball that's doing the hitting.
+     * @param hitter the Ball that hit.
      */
+    @Override
     public void hitEvent(Block beingHit, Ball hitter) {
         beingHit.removeFromGame(game);
         beingHit.removeHitListener(this);
