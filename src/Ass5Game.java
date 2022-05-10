@@ -3,7 +3,7 @@
 /**
  * game run class.
  */
-public class Ass3Game {
+public class Ass5Game {
     /**
      * main func of the game run class.
      * @param args for command line parameters in compilation process - DON'T USE IN THIS PROGRAM.

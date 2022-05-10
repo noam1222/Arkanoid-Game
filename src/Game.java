@@ -15,6 +15,8 @@ public class Game {
 
     private final int screenWidth;
     private final int screenHeight;
+    private final GameGeomerty gameGeometry;
+
     private final SpriteCollection sprites;
     private final GameEnvironment environment;
 
@@ -22,6 +24,7 @@ public class Game {
 
     private final Counter blocksCounter;
     private final Counter ballsCounter;
+    private final Counter scoreCounter;
 
     /**
      * <p>constructor - initialize this game object with received screen width and height,
@@ -35,8 +38,10 @@ public class Game {
         this.screenHeight = screenHeight;
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
+        this.gameGeometry = new GameGeomerty(this.screenWidth, this.screenHeight, this.environment);
         this.blocksCounter = new Counter();
         this.ballsCounter = new Counter();
+        this.scoreCounter = new Counter();
     }
 
     /**
@@ -76,90 +81,27 @@ public class Game {
     }
 
     /**
-     * get the screen blocks that restrict the borders of this game.
-     *
-     * @return Block array of the screen blocks that restrict the borders of this game.
-     */
-    private Block[] getScreenBlockBorders() {
-        Rectangle u = new Rectangle(new Point(BORDER_THICK, 0), screenWidth - 2 * BORDER_THICK, BORDER_THICK);
-        Rectangle r = new Rectangle(new Point(screenWidth - BORDER_THICK, 0), BORDER_THICK, screenHeight);
-        Rectangle l = new Rectangle(new Point(0, 0), BORDER_THICK, screenHeight);
-        Color borderColor = Color.gray;
-        Block up = new Block(u, borderColor);
-        Block right = new Block(r, borderColor);
-        Block left = new Block(l, borderColor);
-        return new Block[]{up, right, left};
-    }
-
-    /**
-     * get the death bottom zone for the balls.
-     * @return block in the start of the death zone.
-     */
-    private Block getDeathBlock() {
-        Rectangle death = new Rectangle(new Point(BORDER_THICK, screenHeight),
-                screenWidth - BORDER_THICK, 1);
-        return new Block(death, Constants.SCREEN_COLOR);
-    }
-
-    /**
-     * check if received point is out of this game borders.
-     *
-     * @param p point to check.
-     * @return true if the point is out of borders, false otherwise.
-     */
-    private boolean isOutOfBorders(Point p) {
-        return p.getX() <= 0 || p.getX() >= screenWidth || p.getY() <= 0 || p.getY() >= screenHeight;
-    }
-
-    /**
-     * get random point that not in any of the collidable object in this game environment.
-     *
-     * @return random point that not in any of the collidable object in this game environment.
-     */
-    private Point getRandomFreePoint() {
-        java.util.Random random = new java.util.Random();
-        Point p;
-        do {
-            double x = random.nextDouble() * screenWidth;
-            double y = random.nextDouble() * screenHeight;
-            p = new Point(x, y);
-        } while (!this.environment.isFreePoint(p));
-        return p;
-    }
-
-    /**
-     * get the paddle block object of this game.
-     * @param paddleWidth the paddle width.
-     * @param paddleHeight the paddle height.
-     * @param color the paddle color.
-     * @return the paddle block object of this game.
-     */
-    private Block getPaddleBlock(int paddleWidth, int paddleHeight, Color color) {
-        Point upperLeft = new Point(screenWidth / 2.0 - paddleWidth / 2.0, screenHeight - paddleHeight);
-        Rectangle paddleRectangle = new Rectangle(upperLeft, paddleWidth, paddleHeight);
-        return new Block(paddleRectangle, color);
-    }
-
-    /**
-     *  Initialize a new game: create the necessary objects and add them to the game.
+     * Initialize a new game: create the necessary objects and add them to the game.
      */
     public void initialize() {
         this.gui = new GUI("Arkanoid", screenWidth, screenHeight);
         BlockRemover blockRemover = new BlockRemover(this, this.blocksCounter);
         BallRemover ballRemover = new BallRemover(this, this.ballsCounter);
+        ScoreTrackingListener scoreTrackingListener = new ScoreTrackingListener(this.scoreCounter);
 
         // initialize paddle
-        Block paddleBlock = this.getPaddleBlock(100, Constants.PADDLE_HEIGHT, Color.orange);
+        Block paddleBlock = this.gameGeometry.getPaddleBlock(100, Constants.PADDLE_HEIGHT, Color.orange);
         Paddle paddle = new Paddle(gui.getKeyboardSensor(), paddleBlock, BORDER_THICK,
                 screenWidth - BORDER_THICK, 10);
         paddle.addToGame(this);
 
         // initialize borders
-        for (Block b : this.getScreenBlockBorders()) {
+        for (Block b : this.gameGeometry.getScreenBlockBorders()) {
             b.addToGame(this);
         }
 
-        Block deathBlock = this.getDeathBlock();
+        // initialize death block
+        Block deathBlock = this.gameGeometry.getDeathBlock();
         deathBlock.addToGame(this);
         deathBlock.addHitListener(ballRemover);
 
@@ -177,11 +119,15 @@ public class Game {
                 blocks[i] = new Block(rect, color);
                 blocks[i].addToGame(this);
                 blocks[i].addHitListener(blockRemover);
+                blocks[i].addHitListener(scoreTrackingListener);
                 this.blocksCounter.increase(1);
                 upLeft = upLeft.getPointInDistance(blockWidth, 0);
             }
             lineHeight += blockHeight;
         }
+
+        ScoreIndicator scoreIndicator = new ScoreIndicator(scoreCounter);
+        this.sprites.addSprite(scoreIndicator);
 
         // initialize balls
         ArrayList<Ball> balls = new ArrayList<>();
@@ -196,8 +142,8 @@ public class Game {
         balls.add(b3);
 
         for (Ball ball : balls) {
-            if (!this.environment.isFreePoint(ball.getCenter()) || isOutOfBorders(ball.getCenter())) {
-                ball.setCenter(this.getRandomFreePoint());
+            if (!this.environment.isFreePoint(ball.getCenter()) || gameGeometry.isOutOfBorders(ball.getCenter())) {
+                ball.setCenter(gameGeometry.getRandomFreePoint());
             }
             ball.addToGame(this);
             this.ballsCounter.increase(1);
@@ -212,6 +158,7 @@ public class Game {
         int framesPerSecond = 60;
         int millisecondsPerFrame = 1000 / framesPerSecond;
         while (true) {
+            System.out.println(this.scoreCounter.getValue());
             long startTime = System.currentTimeMillis(); // timing
 
             DrawSurface d = this.gui.getDrawSurface();
@@ -228,8 +175,15 @@ public class Game {
                 sleeper.sleepFor(milliSecondLeftToSleep);
             }
 
+            // check for end of level
+            if (this.blocksCounter.getValue() == 0) {
+                this.scoreCounter.increase(100);
+                this.gui.close();
+                return;
+            }
+
             // check for end of the game
-            if (this.blocksCounter.getValue() == 0 || this.ballsCounter.getValue() == 0) {
+            if (this.ballsCounter.getValue() == 0) {
                 this.gui.close();
                 return;
             }
