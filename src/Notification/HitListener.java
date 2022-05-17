@@ -1,6 +1,6 @@
 // 209407162 Noam Maimon
 
-package notification;
+package Notification;
 
 import Collidables.Block;
 import Sprites.Ball;

@@ -4,7 +4,7 @@ package Collidables;
 
 import Geometry.Point;
 import Geometry.Rectangle;
-import Helpers.Velocity;
+import Geometry.Velocity;
 import Sprites.Ball;
 
 /**

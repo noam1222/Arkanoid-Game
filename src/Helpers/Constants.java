@@ -12,5 +12,6 @@ public final class Constants {
     public static final int SCREEN_HEIGHT = 600;
     public static final int SCREEN_BORDERS_THICK = 10;
     public static final int PADDLE_HEIGHT = 20;
-    public static final Color SCREEN_COLOR = Color.blue;
+    public static final Color SCREEN_COLOR = new Color(0, 150, 0);
+    public static final int FONT_SIZE = 20;
 }

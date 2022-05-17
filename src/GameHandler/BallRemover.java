@@ -5,7 +5,7 @@ package GameHandler;
 import Collidables.Block;
 import Helpers.Counter;
 import Sprites.Ball;
-import notification.HitListener;
+import Notification.HitListener;
 
 /**
  * class that in charge of removing balls from the game, as well as keeping count of the number of balls that remain.

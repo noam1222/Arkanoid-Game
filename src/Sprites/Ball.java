@@ -10,7 +10,7 @@ import GameHandler.Game;
 import Geometry.Line;
 import Geometry.Point;
 import Helpers.Constants;
-import Helpers.Velocity;
+import Geometry.Velocity;
 import biuoop.DrawSurface;
 
 /**

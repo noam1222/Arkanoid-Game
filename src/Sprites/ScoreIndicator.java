@@ -13,9 +13,8 @@ import java.awt.Color;
  * class that indicate the score of the player in the Arkanoid game by implement the Sprites.Sprite interface.
  */
 public class ScoreIndicator implements Sprite {
-    private static final int FONT_SIZE = 50;
-    private static final int X = Constants.SCREEN_WIDTH / 2 - FONT_SIZE / 2;
-    private static final int Y = Constants.SCREEN_BORDERS_THICK + FONT_SIZE;
+    private static final int X = Constants.SCREEN_WIDTH / 2 - Constants.FONT_SIZE / 2;
+    private static final int Y = (int) Math.floor(1.5 * Constants.FONT_SIZE) + 1;
 
     private final Counter scoreCounter;
 
@@ -29,9 +28,9 @@ public class ScoreIndicator implements Sprite {
 
     @Override
     public void drawOn(DrawSurface d) {
-        d.setColor(Color.WHITE);
-        String score = String.valueOf(this.scoreCounter.getValue());
-        d.drawText(X, Y, score, FONT_SIZE);
+        d.setColor(Color.BLACK);
+        String score = "Score: " + this.scoreCounter.getValue();
+        d.drawText(X, Y, score, Constants.FONT_SIZE);
     }
 
     @Override

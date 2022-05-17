@@ -7,7 +7,7 @@ import Collidables.Collidable;
 import GameHandler.Game;
 import Geometry.Point;
 import Geometry.Rectangle;
-import Helpers.Velocity;
+import Geometry.Velocity;
 import biuoop.DrawSurface;
 import biuoop.KeyboardSensor;
 

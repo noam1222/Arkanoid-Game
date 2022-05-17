@@ -5,7 +5,7 @@ package GameHandler;
 import Collidables.Block;
 import Helpers.Counter;
 import Sprites.Ball;
-import notification.HitListener;
+import Notification.HitListener;
 
 /**
  * class that in charge of score tracking in the Arkanoid game.

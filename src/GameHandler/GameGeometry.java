@@ -13,7 +13,7 @@ import java.awt.Color;
 /**
  * class to handle the Arkanoid game geometry.
  */
-public class GameGeomerty {
+public class GameGeometry {
     private static final int BORDER_THICK = Constants.SCREEN_BORDERS_THICK;
 
     private final int screenWidth;
@@ -21,12 +21,12 @@ public class GameGeomerty {
     private final GameEnvironment environment;
 
     /**
-     * constroctur - initialize game blocks object.
+     * constructor - initialize game blocks object.
      * @param screenWidth screen width of the game.
      * @param screenHeight screen height of the game.
      * @param environment game environment of the game - all the collidables objects in the game.
      */
-    public GameGeomerty(int screenWidth, int screenHeight, GameEnvironment environment) {
+    public GameGeometry(int screenWidth, int screenHeight, GameEnvironment environment) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.environment = environment;
@@ -38,14 +38,19 @@ public class GameGeomerty {
      * @return Block array of the screen blocks that restrict the borders of this game.
      */
     public Block[] getScreenBlockBorders() {
-        Rectangle u = new Rectangle(new Point(BORDER_THICK, 0), screenWidth - 2 * BORDER_THICK, BORDER_THICK);
+        Rectangle s = new Rectangle(new Point(BORDER_THICK, 0), screenWidth - 2 * BORDER_THICK,
+                Constants.FONT_SIZE * 2);
+        Rectangle u = new Rectangle(new Point(BORDER_THICK, s.getHeight()),
+                screenWidth - 2 * BORDER_THICK, BORDER_THICK);
         Rectangle r = new Rectangle(new Point(screenWidth - BORDER_THICK, 0), BORDER_THICK, screenHeight);
         Rectangle l = new Rectangle(new Point(0, 0), BORDER_THICK, screenHeight);
         Color borderColor = Color.gray;
+        Color scoreColor = Color.lightGray;
+        Block score = new Block(s, scoreColor);
         Block up = new Block(u, borderColor);
         Block right = new Block(r, borderColor);
         Block left = new Block(l, borderColor);
-        return new Block[]{up, right, left};
+        return new Block[]{score, up, right, left};
     }
 
     /**
@@ -66,7 +71,8 @@ public class GameGeomerty {
      * @return the paddle block object of this game.
      */
     public Block getPaddleBlock(int paddleWidth, int paddleHeight, Color color) {
-        Point upperLeft = new Point(screenWidth / 2.0 - paddleWidth / 2.0, screenHeight - paddleHeight);
+        Point upperLeft = new Point(screenWidth / 2.0 - paddleWidth / 2.0,
+                screenHeight - BORDER_THICK - paddleHeight);
         Rectangle paddleRectangle = new Rectangle(upperLeft, paddleWidth, paddleHeight);
         return new Block(paddleRectangle, color);
     }

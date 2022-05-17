@@ -18,8 +18,8 @@ import biuoop.DrawSurface;
 import biuoop.GUI;
 import biuoop.Sleeper;
 
-import java.util.ArrayList;
 import java.awt.Color;
+import java.util.ArrayList;
 
 /**
  * class of Arkanoid game handler.
@@ -29,7 +29,7 @@ public class Game {
 
     private final int screenWidth;
     private final int screenHeight;
-    private final GameGeomerty gameGeometry;
+    private final GameGeometry gameGeometry;
 
     private final SpriteCollection sprites;
     private final GameEnvironment environment;
@@ -52,7 +52,7 @@ public class Game {
         this.screenHeight = screenHeight;
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
-        this.gameGeometry = new GameGeomerty(this.screenWidth, this.screenHeight, this.environment);
+        this.gameGeometry = new GameGeometry(this.screenWidth, this.screenHeight, this.environment);
         this.blocksCounter = new Counter();
         this.ballsCounter = new Counter();
         this.scoreCounter = new Counter();
@@ -149,10 +149,10 @@ public class Game {
         b1.setVelocity(10, 5);
         balls.add(b1);
         Ball b2 = new Ball(400, 600, 5, Color.green, this.environment);
-        b2.setVelocity(5, 5);
+        b2.setVelocity(5, -5);
         balls.add(b2);
-        Ball b3 = new Ball(400, 700, 10, Color.red, this.environment);
-        b3.setVelocity(5, -5);
+        Ball b3 = new Ball(100, 100, 7, Color.CYAN, this.environment);
+        b3.setVelocity(4, -4);
         balls.add(b3);
 
         for (Ball ball : balls) {
@@ -172,7 +172,6 @@ public class Game {
         int framesPerSecond = 60;
         int millisecondsPerFrame = 1000 / framesPerSecond;
         while (true) {
-            System.out.println(this.scoreCounter.getValue());
             long startTime = System.currentTimeMillis(); // timing
 
             DrawSurface d = this.gui.getDrawSurface();

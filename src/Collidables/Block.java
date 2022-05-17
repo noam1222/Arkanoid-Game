@@ -6,12 +6,12 @@ import GameHandler.Game;
 import Geometry.Line;
 import Geometry.Point;
 import Geometry.Rectangle;
-import Helpers.Velocity;
+import Geometry.Velocity;
 import Sprites.Ball;
 import Sprites.Sprite;
 import biuoop.DrawSurface;
-import notification.HitListener;
-import notification.HitNotifier;
+import Notification.HitListener;
+import Notification.HitNotifier;
 
 import java.awt.Color;
 import java.util.ArrayList;
