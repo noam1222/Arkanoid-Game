@@ -12,25 +12,29 @@ import java.awt.Color;
 /**
  * class that indicate the score of the player in the Arkanoid game by implement the Sprites.Sprite interface.
  */
-public class ScoreIndicator implements Sprite {
-    private static final int X = Constants.SCREEN_WIDTH / 2 - Constants.FONT_SIZE / 2;
+public class InfoBlock implements Sprite {
+    private static final int X = 50;
     private static final int Y = (int) Math.floor(1.5 * Constants.FONT_SIZE) + 1;
 
     private final Counter scoreCounter;
+    private final String levelName;
 
     /**
      * constructor - initialize score indicator object.
      * @param scoreCounter the player score counter.
+     * @param levelName the name of this level.
      */
-    public ScoreIndicator(Counter scoreCounter) {
+    public InfoBlock(Counter scoreCounter, String levelName) {
         this.scoreCounter = scoreCounter;
+        this.levelName = levelName;
     }
 
     @Override
     public void drawOn(DrawSurface d) {
         d.setColor(Color.BLACK);
-        String score = "Score: " + this.scoreCounter.getValue();
-        d.drawText(X, Y, score, Constants.FONT_SIZE);
+        d.drawText(X, Y, "Lives: 7", Constants.FONT_SIZE);
+        d.drawText(X + 300, Y, "Score: " + this.scoreCounter.getValue(), Constants.FONT_SIZE);
+        d.drawText(X + 500, Y, "Level Name: " + this.levelName, Constants.FONT_SIZE);
     }
 
     @Override

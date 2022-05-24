@@ -6,20 +6,19 @@ import Collidables.Block;
 import Collidables.Collidable;
 import Collidables.GameEnvironment;
 import Geometry.Point;
-import Geometry.Rectangle;
+import Geometry.Velocity;
 import Helpers.Constants;
 import Helpers.Counter;
+import Levels.LevelInformation;
 import Sprites.Ball;
 import Sprites.Paddle;
-import Sprites.ScoreIndicator;
+import Sprites.InfoBlock;
 import Sprites.Sprite;
 import Sprites.SpriteCollection;
 import biuoop.DrawSurface;
-import biuoop.GUI;
 import biuoop.KeyboardSensor;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
 /**
  * class of Arkanoid game handler.
@@ -27,17 +26,16 @@ import java.util.ArrayList;
 public class GameLevel implements Animation {
     private static final int BORDER_THICK = Constants.SCREEN_BORDERS_THICK;
 
-    private final int screenWidth;
-    private final int screenHeight;
-    private final GameGeometry gameGeometry;
+    private final BasicGameGeometry basicGameGeometry;
+
+    private final LevelInformation levelInformation;
 
     private final SpriteCollection sprites;
     private final GameEnvironment environment;
 
-    private GUI gui;
-    private AnimationRunner runner;
+    private final AnimationRunner runner;
     private boolean running;
-    private KeyboardSensor keyboard;
+    private final KeyboardSensor keyboard;
 
     private final Counter blocksCounter;
     private final Counter ballsCounter;
@@ -47,21 +45,23 @@ public class GameLevel implements Animation {
      * <p>constructor - initialize this game object with received screen width and height,
      * and new Sprites.SpriteCollection and GameEnvironment objects.</p>
      *
-     * @param screenWidth  the game screen width.
-     * @param screenHeight the game screen height.
+     * @param levelInformation information about the level to run.
+     * @param scoreCounter counter of the score of the whole game.
+     * @param animationRunner runner of this game.
+     * @param keyboard user keyboard to handle user commands.
      */
-    public GameLevel(int screenWidth, int screenHeight) {
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
+    public GameLevel(LevelInformation levelInformation, Counter scoreCounter, AnimationRunner animationRunner,
+                     KeyboardSensor keyboard) {
+        this.levelInformation = levelInformation;
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
-        this.gameGeometry = new GameGeometry(this.screenWidth, this.screenHeight, this.environment);
-        this.gui = new GUI("Arkanoid", this.screenWidth, this.screenHeight);
-        this.runner = new AnimationRunner(this.gui, 60);
-        this.keyboard = gui.getKeyboardSensor();
+        this.basicGameGeometry = new BasicGameGeometry(Constants.SCREEN_WIDTH,
+                Constants.SCREEN_HEIGHT, this.environment);
+        this.runner = animationRunner;
+        this.keyboard = keyboard;
         this.blocksCounter = new Counter();
         this.ballsCounter = new Counter();
-        this.scoreCounter = new Counter();
+        this.scoreCounter = scoreCounter;
     }
 
     /**
@@ -109,64 +109,52 @@ public class GameLevel implements Animation {
         ScoreTrackingListener scoreTrackingListener = new ScoreTrackingListener(this.scoreCounter);
 
         // initialize paddle
-        Block paddleBlock = this.gameGeometry.getPaddleBlock(100, Constants.PADDLE_HEIGHT, Color.orange);
-        Paddle paddle = new Paddle(this.gui.getKeyboardSensor(), paddleBlock, BORDER_THICK,
-                screenWidth - BORDER_THICK, 10);
+        Block paddleBlock = this.basicGameGeometry.getPaddleBlock(this.levelInformation.paddleWidth(),
+                Constants.PADDLE_HEIGHT, Color.orange);
+        Paddle paddle = new Paddle(this.keyboard, paddleBlock, BORDER_THICK,
+                Constants.SCREEN_WIDTH - BORDER_THICK, this.levelInformation.paddleSpeed());
         paddle.addToGame(this);
 
         // initialize borders
-        for (Block b : this.gameGeometry.getScreenBlockBorders()) {
+        for (Block b : this.basicGameGeometry.getScreenBlockBorders()) {
             b.addToGame(this);
         }
 
         // initialize death block
-        Block deathBlock = this.gameGeometry.getDeathBlock();
+        Block deathBlock = this.basicGameGeometry.getDeathBlock();
         deathBlock.addToGame(this);
         deathBlock.addHitListener(ballRemover);
 
-        // initialize ass 3 collidables blocks
-        int lineHeight = screenHeight / 4;
-        int blockWidth = 40;
-        int blockHeight = 20;
-        Color[] colors = {Color.cyan, Color.green, Color.yellow, Color.MAGENTA, Color.RED, Color.PINK, Color.ORANGE};
-        for (int numOfBlocksInRow = 12; numOfBlocksInRow >= 7; numOfBlocksInRow--) {
-            Block[] blocks = new Block[numOfBlocksInRow];
-            Color color = colors[numOfBlocksInRow - 7];
-            Point upLeft = new Point(screenWidth - BORDER_THICK - numOfBlocksInRow * blockWidth, lineHeight);
-            for (int i = 0; i < blocks.length; i++) {
-                Rectangle rect = new Rectangle(upLeft, blockWidth, blockHeight);
-                blocks[i] = new Block(rect, color);
-                blocks[i].addToGame(this);
-                blocks[i].addHitListener(blockRemover);
-                blocks[i].addHitListener(scoreTrackingListener);
-                this.blocksCounter.increase(1);
-                upLeft = upLeft.getPointInDistance(blockWidth, 0);
-            }
-            lineHeight += blockHeight;
+        //initialize level blocks
+        for (Block block : this.levelInformation.blocks()) {
+            block.addToGame(this);
+            block.addHitListener(blockRemover);
+            block.addHitListener(scoreTrackingListener);
+            this.blocksCounter.increase(1);
         }
 
-        ScoreIndicator scoreIndicator = new ScoreIndicator(scoreCounter);
-        this.sprites.addSprite(scoreIndicator);
+        InfoBlock infoBlock = new InfoBlock(scoreCounter, this.levelInformation.levelName());
+        this.sprites.addSprite(infoBlock);
 
-        // initialize balls
-        ArrayList<Ball> balls = new ArrayList<>();
-        Ball b1 = new Ball(250, 50, 5, Color.yellow, this.environment);
-        b1.setVelocity(10, 5);
-        balls.add(b1);
-        Ball b2 = new Ball(400, 600, 5, Color.green, this.environment);
-        b2.setVelocity(5, -5);
-        balls.add(b2);
-        Ball b3 = new Ball(100, 100, 7, Color.CYAN, this.environment);
-        b3.setVelocity(4, -4);
-        balls.add(b3);
 
-        for (Ball ball : balls) {
-            if (!this.environment.isFreePoint(ball.getCenter()) || gameGeometry.isOutOfBorders(ball.getCenter())) {
-                ball.setCenter(gameGeometry.getRandomFreePoint());
+        Point center = new Point(Constants.SCREEN_WIDTH / 2.0,
+                Constants.SCREEN_HEIGHT - Constants.SCREEN_HEIGHT / 8.0);
+        double r = Constants.SCREEN_HEIGHT / 4.0 - 10;
+        double alphaUnit = 180.0 / (this.levelInformation.numberOfBalls() + 1);
+        double alpha = alphaUnit;
+        for (Velocity velocity : this.levelInformation.initialBallVelocities()) {
+            double x = center.getX() + r * Math.cos(Math.toRadians(alpha));
+            double y = center.getY() - r * Math.abs(Math.sin(Math.toRadians(alpha)));
+            Ball ball = new Ball(
+                    x, y, 5, Color.white, this.environment);
+            ball.setVelocity(velocity);
+            if (!this.environment.isFreePoint(ball.getCenter()) || basicGameGeometry.isOutOfBorders(ball.getCenter())) {
+                ball.setCenter(basicGameGeometry.getRandomFreePoint());
             }
             ball.addToGame(this);
-            this.ballsCounter.increase(1);
+            alpha += alphaUnit;
         }
+        this.ballsCounter.increase(this.levelInformation.numberOfBalls());
     }
 
     /**
@@ -179,8 +167,7 @@ public class GameLevel implements Animation {
 
     @Override
     public void doOneFrame(DrawSurface d) {
-        d.setColor(Constants.SCREEN_COLOR);
-        d.fillRectangle(0, 0, screenWidth, screenHeight);
+        this.levelInformation.getBackground().drawOn(d);
 
         this.sprites.drawAllOn(d);
         this.sprites.notifyAllTimePassed();
@@ -189,8 +176,9 @@ public class GameLevel implements Animation {
             this.runner.run(new PauseScreen(this.keyboard));
         }
 
-        // check for end of level or game
-        if (this.blocksCounter.getValue() == 0) {
+        //check for end of level or game
+        if (this.blocksCounter.getValue()
+                == this.levelInformation.blocks().size() - this.levelInformation.numberOfBlocksToRemove()) {
             this.scoreCounter.increase(100);
             this.running = false;
         } else if (this.ballsCounter.getValue() == 0) {
@@ -202,5 +190,13 @@ public class GameLevel implements Animation {
     @Override
     public boolean shouldStop() {
         return !this.running;
+    }
+
+    /**
+     * check if the ball counter is 0.
+     * @return true if the ball counter is 0, false otherwise.
+     */
+    public boolean looseAllBalls() {
+        return this.ballsCounter.getValue() == 0;
     }
 }

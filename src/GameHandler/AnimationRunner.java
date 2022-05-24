@@ -42,4 +42,11 @@ public class AnimationRunner {
             }
         }
     }
+
+    /**
+     * close the animation and as a result close the game.
+     */
+    public void close() {
+        this.gui.close();
+    }
 }

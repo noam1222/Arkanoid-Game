@@ -13,7 +13,7 @@ import java.awt.Color;
 /**
  * class to handle the Arkanoid game geometry.
  */
-public class GameGeometry {
+public class BasicGameGeometry {
     private static final int BORDER_THICK = Constants.SCREEN_BORDERS_THICK;
 
     private final int screenWidth;
@@ -26,7 +26,7 @@ public class GameGeometry {
      * @param screenHeight screen height of the game.
      * @param environment game environment of the game - all the collidables objects in the game.
      */
-    public GameGeometry(int screenWidth, int screenHeight, GameEnvironment environment) {
+    public BasicGameGeometry(int screenWidth, int screenHeight, GameEnvironment environment) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.environment = environment;

@@ -1,4 +1,4 @@
-package GameHandler;
+package Levels;
 
 import Collidables.Block;
 import Geometry.Velocity;
