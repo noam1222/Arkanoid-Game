@@ -6,7 +6,7 @@ import java.awt.Color;
 
 import Collidables.CollisionInfo;
 import Collidables.GameEnvironment;
-import GameHandler.Game;
+import GameHandler.GameLevel;
 import Geometry.Line;
 import Geometry.Point;
 import Helpers.Constants;
@@ -208,7 +208,7 @@ public class Ball implements Sprite {
      *
      * @param g the Game.Game object to add to.
      */
-    public void addToGame(Game g) {
+    public void addToGame(GameLevel g) {
         g.addSprite(this);
     }
 
@@ -216,7 +216,7 @@ public class Ball implements Sprite {
      * remove this ball from receiving game object.
      * @param g game object to remove from.
      */
-    public void removeFromGame(Game g) {
+    public void removeFromGame(GameLevel g) {
         g.removeSprite(this);
     }
 }

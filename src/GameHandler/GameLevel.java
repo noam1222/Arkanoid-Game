@@ -16,7 +16,7 @@ import Sprites.Sprite;
 import Sprites.SpriteCollection;
 import biuoop.DrawSurface;
 import biuoop.GUI;
-import biuoop.Sleeper;
+import biuoop.KeyboardSensor;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 /**
  * class of Arkanoid game handler.
  */
-public class Game {
+public class GameLevel implements Animation {
     private static final int BORDER_THICK = Constants.SCREEN_BORDERS_THICK;
 
     private final int screenWidth;
@@ -35,6 +35,9 @@ public class Game {
     private final GameEnvironment environment;
 
     private GUI gui;
+    private AnimationRunner runner;
+    private boolean running;
+    private KeyboardSensor keyboard;
 
     private final Counter blocksCounter;
     private final Counter ballsCounter;
@@ -47,12 +50,15 @@ public class Game {
      * @param screenWidth  the game screen width.
      * @param screenHeight the game screen height.
      */
-    public Game(int screenWidth, int screenHeight) {
+    public GameLevel(int screenWidth, int screenHeight) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
         this.gameGeometry = new GameGeometry(this.screenWidth, this.screenHeight, this.environment);
+        this.gui = new GUI("Arkanoid", this.screenWidth, this.screenHeight);
+        this.runner = new AnimationRunner(this.gui, 60);
+        this.keyboard = gui.getKeyboardSensor();
         this.blocksCounter = new Counter();
         this.ballsCounter = new Counter();
         this.scoreCounter = new Counter();
@@ -98,14 +104,13 @@ public class Game {
      * Initialize a new game: create the necessary objects and add them to the game.
      */
     public void initialize() {
-        this.gui = new GUI("Arkanoid", screenWidth, screenHeight);
         BlockRemover blockRemover = new BlockRemover(this, this.blocksCounter);
         BallRemover ballRemover = new BallRemover(this, this.ballsCounter);
         ScoreTrackingListener scoreTrackingListener = new ScoreTrackingListener(this.scoreCounter);
 
         // initialize paddle
         Block paddleBlock = this.gameGeometry.getPaddleBlock(100, Constants.PADDLE_HEIGHT, Color.orange);
-        Paddle paddle = new Paddle(gui.getKeyboardSensor(), paddleBlock, BORDER_THICK,
+        Paddle paddle = new Paddle(this.gui.getKeyboardSensor(), paddleBlock, BORDER_THICK,
                 screenWidth - BORDER_THICK, 10);
         paddle.addToGame(this);
 
@@ -168,38 +173,34 @@ public class Game {
      * run the game - start the animation loop.
      */
     public void run() {
-        Sleeper sleeper = new Sleeper();
-        int framesPerSecond = 60;
-        int millisecondsPerFrame = 1000 / framesPerSecond;
-        while (true) {
-            long startTime = System.currentTimeMillis(); // timing
+        this.running = true;
+        this.runner.run(this);
+    }
 
-            DrawSurface d = this.gui.getDrawSurface();
-            d.setColor(Constants.SCREEN_COLOR);
-            d.fillRectangle(0, 0, screenWidth, screenHeight);
-            this.sprites.drawAllOn(d);
-            this.gui.show(d);
-            this.sprites.notifyAllTimePassed();
+    @Override
+    public void doOneFrame(DrawSurface d) {
+        d.setColor(Constants.SCREEN_COLOR);
+        d.fillRectangle(0, 0, screenWidth, screenHeight);
 
-            // timing
-            long usedTime = System.currentTimeMillis() - startTime;
-            long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
-            if (milliSecondLeftToSleep > 0) {
-                sleeper.sleepFor(milliSecondLeftToSleep);
-            }
+        this.sprites.drawAllOn(d);
+        this.sprites.notifyAllTimePassed();
 
-            // check for end of level
-            if (this.blocksCounter.getValue() == 0) {
-                this.scoreCounter.increase(100);
-                this.gui.close();
-                return;
-            }
-
-            // check for end of the game
-            if (this.ballsCounter.getValue() == 0) {
-                this.gui.close();
-                return;
-            }
+        if (this.keyboard.isPressed("p")) {
+            this.runner.run(new PauseScreen(this.keyboard));
         }
+
+        // check for end of level or game
+        if (this.blocksCounter.getValue() == 0) {
+            this.scoreCounter.increase(100);
+            this.running = false;
+        } else if (this.ballsCounter.getValue() == 0) {
+            this.running = false;
+        }
+
+    }
+
+    @Override
+    public boolean shouldStop() {
+        return !this.running;
     }
 }

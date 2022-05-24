@@ -4,7 +4,7 @@ package Sprites;
 
 import Collidables.Block;
 import Collidables.Collidable;
-import GameHandler.Game;
+import GameHandler.GameLevel;
 import Geometry.Point;
 import Geometry.Rectangle;
 import Geometry.Velocity;
@@ -137,7 +137,7 @@ public class Paddle implements Sprite, Collidable {
      *
      * @param g the Game.Game object to add this paddle to.
      */
-    public void addToGame(Game g) {
+    public void addToGame(GameLevel g) {
         g.addCollidable(this);
         g.addSprite(this);
     }

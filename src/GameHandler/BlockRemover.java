@@ -11,7 +11,7 @@ import Notification.HitListener;
  * class that in charge of removing blocks from the game, as well as keeping count of the number of blocks that remain.
  */
 public class BlockRemover implements HitListener {
-    private final Game game;
+    private final GameLevel game;
     private final Counter remainingBlocks;
 
     /**
@@ -19,7 +19,7 @@ public class BlockRemover implements HitListener {
      * @param game game to remove the blocks from.
      * @param removedBlocks the number of blocks in this game.
      */
-    public BlockRemover(Game game, Counter removedBlocks) {
+    public BlockRemover(GameLevel game, Counter removedBlocks) {
         this.game = game;
         this.remainingBlocks = removedBlocks;
     }

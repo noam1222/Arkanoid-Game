@@ -2,7 +2,7 @@
 
 package Collidables;
 
-import GameHandler.Game;
+import GameHandler.GameLevel;
 import Geometry.Line;
 import Geometry.Point;
 import Geometry.Rectangle;
@@ -106,7 +106,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
      *
      * @param g the Game.Game object to add to.
      */
-    public void addToGame(Game g) {
+    public void addToGame(GameLevel g) {
         g.addCollidable(this);
         g.addSprite(this);
     }
@@ -116,7 +116,7 @@ public class Block implements Collidable, Sprite, HitNotifier {
      *
      * @param game game object to remove this block from.
      */
-    public void removeFromGame(Game game) {
+    public void removeFromGame(GameLevel game) {
         game.removeCollidable(this);
         game.removeSprite(this);
     }

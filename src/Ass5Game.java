@@ -1,6 +1,6 @@
 // 209407162 Noam Maimon
 
-import GameHandler.Game;
+import GameHandler.GameLevel;
 import Helpers.Constants;
 
 /**
@@ -12,7 +12,7 @@ public class Ass5Game {
      * @param args for command line parameters in compilation process - DON'T USE IN THIS PROGRAM.
      */
     public static void main(String[] args) {
-        Game g = new Game(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+        GameLevel g = new GameLevel(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
         g.initialize();
         g.run();
     }
