@@ -28,8 +28,8 @@ public class Velocity {
      * @return new Geometry.Velocity object of the receiving angle and speed.
      */
     public static Velocity fromAngleAndSpeed(double angle, double speed) {
-        double dx = speed * Math.sin(Math.toRadians(angle));
-        double dy = speed * -Math.cos(Math.toRadians(angle));
+        double dx = speed * Math.cos(Math.toRadians(angle));
+        double dy = speed * -Math.sin(Math.toRadians(angle));
         return new Velocity(dx, dy);
     }
 

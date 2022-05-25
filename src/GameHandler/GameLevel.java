@@ -5,7 +5,6 @@ package GameHandler;
 import Collidables.Block;
 import Collidables.Collidable;
 import Collidables.GameEnvironment;
-import Geometry.Point;
 import Geometry.Velocity;
 import Helpers.Constants;
 import Helpers.Counter;
@@ -32,6 +31,7 @@ public class GameLevel implements Animation {
 
     private final SpriteCollection sprites;
     private final GameEnvironment environment;
+    private Paddle paddle;
 
     private final AnimationRunner runner;
     private boolean running;
@@ -40,6 +40,7 @@ public class GameLevel implements Animation {
     private final Counter blocksCounter;
     private final Counter ballsCounter;
     private final Counter scoreCounter;
+    private final Counter lives;
 
     /**
      * <p>constructor - initialize this game object with received screen width and height,
@@ -62,6 +63,7 @@ public class GameLevel implements Animation {
         this.blocksCounter = new Counter();
         this.ballsCounter = new Counter();
         this.scoreCounter = scoreCounter;
+        this.lives = new Counter(7);
     }
 
     /**
@@ -108,17 +110,16 @@ public class GameLevel implements Animation {
         BallRemover ballRemover = new BallRemover(this, this.ballsCounter);
         ScoreTrackingListener scoreTrackingListener = new ScoreTrackingListener(this.scoreCounter);
 
-        // initialize paddle
-        Block paddleBlock = this.basicGameGeometry.getPaddleBlock(this.levelInformation.paddleWidth(),
-                Constants.PADDLE_HEIGHT, Color.orange);
-        Paddle paddle = new Paddle(this.keyboard, paddleBlock, BORDER_THICK,
-                Constants.SCREEN_WIDTH - BORDER_THICK, this.levelInformation.paddleSpeed());
-        paddle.addToGame(this);
+        initializePaddle();
 
         // initialize borders
         for (Block b : this.basicGameGeometry.getScreenBlockBorders()) {
             b.addToGame(this);
         }
+
+        // initialize info bar
+        InfoBlock infoBlock = new InfoBlock(this.lives, scoreCounter, this.levelInformation.levelName());
+        this.sprites.addSprite(infoBlock);
 
         // initialize death block
         Block deathBlock = this.basicGameGeometry.getDeathBlock();
@@ -133,26 +134,32 @@ public class GameLevel implements Animation {
             this.blocksCounter.increase(1);
         }
 
-        InfoBlock infoBlock = new InfoBlock(scoreCounter, this.levelInformation.levelName());
-        this.sprites.addSprite(infoBlock);
+        initializeBalls();
+    }
 
+    /**
+     * initialize the paddle of this game level.
+     */
+    private void initializePaddle() {
+        Block paddleBlock = this.basicGameGeometry.getPaddleBlock(this.levelInformation.paddleWidth(),
+                Constants.PADDLE_HEIGHT, Color.orange);
+        this.paddle = new Paddle(this.keyboard, paddleBlock, BORDER_THICK,
+                Constants.SCREEN_WIDTH - BORDER_THICK, this.levelInformation.paddleSpeed());
+        this.paddle.addToGame(this);
+    }
 
-        Point center = new Point(Constants.SCREEN_WIDTH / 2.0,
-                Constants.SCREEN_HEIGHT - Constants.SCREEN_HEIGHT / 8.0);
-        double r = Constants.SCREEN_HEIGHT / 4.0 - 10;
-        double alphaUnit = 180.0 / (this.levelInformation.numberOfBalls() + 1);
-        double alpha = alphaUnit;
-        for (Velocity velocity : this.levelInformation.initialBallVelocities()) {
-            double x = center.getX() + r * Math.cos(Math.toRadians(alpha));
-            double y = center.getY() - r * Math.abs(Math.sin(Math.toRadians(alpha)));
-            Ball ball = new Ball(
-                    x, y, 5, Color.white, this.environment);
-            ball.setVelocity(velocity);
-            if (!this.environment.isFreePoint(ball.getCenter()) || basicGameGeometry.isOutOfBorders(ball.getCenter())) {
-                ball.setCenter(basicGameGeometry.getRandomFreePoint());
+    /**
+     * initialize the balls of this game level.
+     */
+    private void initializeBalls() {
+        for (Velocity v : this.levelInformation.initialBallVelocities()) {
+            Ball b = new Ball(Constants.SCREEN_WIDTH / 2.0,
+                    Constants.SCREEN_HEIGHT - Constants.PADDLE_HEIGHT - 20, 5, Color.white, this.environment);
+            b.setVelocity(v);
+            if (!this.environment.isFreePoint(b.getCenter()) || basicGameGeometry.isOutOfBorders(b.getCenter())) {
+                b.setCenter(basicGameGeometry.getRandomFreePoint());
             }
-            ball.addToGame(this);
-            alpha += alphaUnit;
+            b.addToGame(this);
         }
         this.ballsCounter.increase(this.levelInformation.numberOfBalls());
     }
@@ -173,7 +180,8 @@ public class GameLevel implements Animation {
         this.sprites.notifyAllTimePassed();
 
         if (this.keyboard.isPressed("p")) {
-            this.runner.run(new PauseScreen(this.keyboard));
+            this.runner.run(new KeyPressStoppableAnimation(this.keyboard, KeyboardSensor.SPACE_KEY,
+                    new PauseScreen()));
         }
 
         //check for end of level or game
@@ -182,14 +190,21 @@ public class GameLevel implements Animation {
             this.scoreCounter.increase(100);
             this.running = false;
         } else if (this.ballsCounter.getValue() == 0) {
-            this.running = false;
+            this.lives.decrease(1);
+            if (this.lives.getValue() != 0) {
+                initializeBalls();
+                this.sprites.removeSprite(this.paddle);
+                this.environment.removeCollidable(this.paddle);
+                initializePaddle();
+            } else {
+                this.running = false;
+            }
         }
-
     }
 
     @Override
     public boolean shouldStop() {
-        return !this.running;
+        return !this.running && this.lives.getValue() == 0;
     }
 
     /**

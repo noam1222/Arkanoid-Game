@@ -29,8 +29,9 @@ public class Level2 implements LevelInformation {
     @Override
     public List<Velocity> initialBallVelocities() {
         List<Velocity> velocities = new ArrayList<>();
-        for (int i = 0; i < NUM_OF_BALLS; i++) {
-            velocities.add(new Velocity(5, -5));
+        double alpha = 180.0 / (this.numberOfBalls() + 1);
+        for (int i = 1; i <= this.numberOfBalls(); i++) {
+            velocities.add(Velocity.fromAngleAndSpeed(i * alpha, 5));
         }
         return velocities;
     }

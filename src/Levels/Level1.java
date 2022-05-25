@@ -55,7 +55,8 @@ public class Level1 implements LevelInformation {
         List<Block> blocks = new ArrayList<>();
         blocks.add(new Block(
                 new Rectangle(
-                        new Point(Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGHT / 4), 30, 30
+                        new Point(Constants.SCREEN_WIDTH / 2.0, Constants.SCREEN_HEIGHT / 4.0),
+                        30, 30
                 ),
                 Color.red
         ));

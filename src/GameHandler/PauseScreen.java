@@ -1,33 +1,22 @@
 package GameHandler;
 
+import Helpers.Constants;
 import biuoop.DrawSurface;
-import biuoop.KeyboardSensor;
+
+import java.awt.Color;
 
 /**
  * class for pause the screen in Arkanoid game.
  */
 public class PauseScreen implements Animation {
-    private final KeyboardSensor keyboard;
-    private boolean stop;
-
-    /**
-     * constructor - initialize this class objects.
-     * @param k KeyboardSensor to check when to continue.
-     */
-    public PauseScreen(KeyboardSensor k) {
-        this.keyboard = k;
-        this.stop = false;
-    }
-
     @Override
     public void doOneFrame(DrawSurface d) {
-        d.drawText(10, d.getHeight() / 2, "paused -- press space to continue", 32);
-        if (this.keyboard.isPressed(KeyboardSensor.SPACE_KEY)) {
-            this.stop = true;
-        }
+        d.setColor(Color.green);
+        d.drawText(Constants.SCREEN_WIDTH / 4, Constants.SCREEN_HEIGHT / 2,
+                "paused -- press space to continue", 30);
     }
     @Override
     public boolean shouldStop() {
-        return this.stop;
+        return false;
     }
 }

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="AntConfiguration">
     <buildFile url="file://$PROJECT_DIR$/build.xml">
-      <antCommandLine value="-Dargs=&quot;10 20 5 7 51 16 7 8&quot;" />
+      <antCommandLine value="-Dargs=&quot;2&quot;" />
     </buildFile>
   </component>
 </project>

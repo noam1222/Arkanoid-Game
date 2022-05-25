@@ -15,6 +15,7 @@ public class GameFlow {
 
     /**
      * constructor - initialize this game flow object.
+     *
      * @param ar animation runner for this game.
      * @param ks keyboard sensor of the user.
      */
@@ -24,7 +25,8 @@ public class GameFlow {
     }
 
     /**
-     * reun the levels of the game.
+     * return the levels of the game.
+     *
      * @param levels levels of the game to run.
      */
     public void runLevels(List<LevelInformation> levels) {
@@ -32,17 +34,19 @@ public class GameFlow {
         for (LevelInformation levelInfo : levels) {
 
             GameLevel level = new GameLevel(levelInfo, scoreCounter, this.animationRunner, this.keyboardSensor);
-
             level.initialize();
-
             level.run();
 
             if (level.looseAllBalls()) {
-                animationRunner.run(new EndScreen(false, scoreCounter, this.keyboardSensor));
+                this.animationRunner.run(new KeyPressStoppableAnimation(
+                        this.keyboardSensor, KeyboardSensor.SPACE_KEY,
+                        new EndScreen(false, scoreCounter)));
                 this.animationRunner.close();
-           }
+            }
         }
-        animationRunner.run(new EndScreen(true, scoreCounter, this.keyboardSensor));
+        this.animationRunner.run(new KeyPressStoppableAnimation(
+                this.keyboardSensor, KeyboardSensor.SPACE_KEY,
+                new EndScreen(true, scoreCounter)));
         this.animationRunner.close();
     }
 }

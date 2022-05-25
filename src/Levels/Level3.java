@@ -23,8 +23,10 @@ public class Level3 implements LevelInformation {
     @Override
     public List<Velocity> initialBallVelocities() {
         List<Velocity> velocities = new ArrayList<>();
-        velocities.add(new Velocity(3, 3));
-        velocities.add(new Velocity(3, 3));
+        double alpha = 180.0 / (this.numberOfBalls() + 1);
+        for (int i = 1; i <= this.numberOfBalls(); i++) {
+            velocities.add(Velocity.fromAngleAndSpeed(i * alpha, 5));
+        }
         return velocities;
     }
 
