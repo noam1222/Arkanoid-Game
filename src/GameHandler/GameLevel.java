@@ -196,6 +196,7 @@ public class GameLevel implements Animation {
                 this.sprites.removeSprite(this.paddle);
                 this.environment.removeCollidable(this.paddle);
                 initializePaddle();
+                this.runner.run(new CountdownAnimation(2, 3, this.sprites));
             } else {
                 this.running = false;
             }
