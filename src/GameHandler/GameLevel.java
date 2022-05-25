@@ -40,7 +40,7 @@ public class GameLevel implements Animation {
     private final Counter blocksCounter;
     private final Counter ballsCounter;
     private final Counter scoreCounter;
-    private final Counter lives;
+    private static final Counter LIVES = new Counter(7);
 
     /**
      * <p>constructor - initialize this game object with received screen width and height,
@@ -63,7 +63,6 @@ public class GameLevel implements Animation {
         this.blocksCounter = new Counter();
         this.ballsCounter = new Counter();
         this.scoreCounter = scoreCounter;
-        this.lives = new Counter(7);
     }
 
     /**
@@ -110,6 +109,8 @@ public class GameLevel implements Animation {
         BallRemover ballRemover = new BallRemover(this, this.ballsCounter);
         ScoreTrackingListener scoreTrackingListener = new ScoreTrackingListener(this.scoreCounter);
 
+        this.sprites.addSprite(this.levelInformation.getBackground());
+
         initializePaddle();
 
         // initialize borders
@@ -118,7 +119,7 @@ public class GameLevel implements Animation {
         }
 
         // initialize info bar
-        InfoBlock infoBlock = new InfoBlock(this.lives, scoreCounter, this.levelInformation.levelName());
+        InfoBlock infoBlock = new InfoBlock(LIVES, scoreCounter, this.levelInformation.levelName());
         this.sprites.addSprite(infoBlock);
 
         // initialize death block
@@ -168,14 +169,13 @@ public class GameLevel implements Animation {
      * run the game - start the animation loop.
      */
     public void run() {
+        this.runner.run(new CountdownAnimation(2, 3, this.sprites));
         this.running = true;
         this.runner.run(this);
     }
 
     @Override
     public void doOneFrame(DrawSurface d) {
-        this.levelInformation.getBackground().drawOn(d);
-
         this.sprites.drawAllOn(d);
         this.sprites.notifyAllTimePassed();
 
@@ -190,8 +190,8 @@ public class GameLevel implements Animation {
             this.scoreCounter.increase(100);
             this.running = false;
         } else if (this.ballsCounter.getValue() == 0) {
-            this.lives.decrease(1);
-            if (this.lives.getValue() != 0) {
+            LIVES.decrease(1);
+            if (LIVES.getValue() != 0) {
                 initializeBalls();
                 this.sprites.removeSprite(this.paddle);
                 this.environment.removeCollidable(this.paddle);
@@ -204,7 +204,7 @@ public class GameLevel implements Animation {
 
     @Override
     public boolean shouldStop() {
-        return !this.running && this.lives.getValue() == 0;
+        return !this.running;
     }
 
     /**

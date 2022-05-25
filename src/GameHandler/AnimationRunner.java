@@ -12,8 +12,9 @@ public class AnimationRunner {
     private final int framesPerSecond;
 
     /**
-     * constructor - initialize obkect of this class.
-     * @param gui gui to run the animation on.
+     * constructor - initialize object of this class.
+     *
+     * @param gui             gui to run the animation on.
      * @param framesPerSecond animation frames per seconds.
      */
     public AnimationRunner(GUI gui, int framesPerSecond) {
@@ -23,6 +24,7 @@ public class AnimationRunner {
 
     /**
      * run this animation.
+     *
      * @param animation animation object to run in this animation runner object.
      */
     public void run(Animation animation) {
@@ -33,14 +35,17 @@ public class AnimationRunner {
             DrawSurface d = gui.getDrawSurface();
 
             animation.doOneFrame(d);
-
             gui.show(d);
+
             long usedTime = System.currentTimeMillis() - startTime;
             long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
             if (milliSecondLeftToSleep > 0) {
                 sleeper.sleepFor(milliSecondLeftToSleep);
             }
         }
+        DrawSurface d = gui.getDrawSurface();
+        animation.doOneFrame(d);
+        gui.show(d);
     }
 
     /**
