@@ -191,7 +191,7 @@ public class GameLevel implements Animation {
             this.running = false;
         } else if (this.ballsCounter.getValue() == 0) {
             LIVES.decrease(1);
-            if (LIVES.getValue() != 0) {
+            if (LIVES.getValue() > 0) {
                 initializeBalls();
                 this.sprites.removeSprite(this.paddle);
                 this.environment.removeCollidable(this.paddle);
