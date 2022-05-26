@@ -1,5 +1,9 @@
 package GameHandler;
 
+import Animations.AnimationRunner;
+import Animations.GameOverScreen;
+import Animations.KeyPressStoppableAnimation;
+import Animations.WinScreen;
 import Helpers.Counter;
 import Levels.LevelInformation;
 import biuoop.KeyboardSensor;
@@ -40,13 +44,15 @@ public class GameFlow {
             if (level.looseAllBalls()) {
                 this.animationRunner.run(new KeyPressStoppableAnimation(
                         this.keyboardSensor, KeyboardSensor.SPACE_KEY,
-                        new EndScreen(false, scoreCounter)));
+                        new GameOverScreen(scoreCounter)));
                 this.animationRunner.close();
+            } else {
+                scoreCounter.increase(100);
             }
         }
         this.animationRunner.run(new KeyPressStoppableAnimation(
                 this.keyboardSensor, KeyboardSensor.SPACE_KEY,
-                new EndScreen(true, scoreCounter)));
+                new WinScreen(scoreCounter)));
         this.animationRunner.close();
     }
 }

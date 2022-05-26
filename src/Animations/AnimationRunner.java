@@ -1,4 +1,4 @@
-package GameHandler;
+package Animations;
 
 import biuoop.DrawSurface;
 import biuoop.GUI;

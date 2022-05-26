@@ -1,4 +1,4 @@
-package GameHandler;
+package Animations;
 
 import Helpers.Constants;
 import Sprites.SpriteCollection;

@@ -2,6 +2,11 @@
 
 package GameHandler;
 
+import Animations.Animation;
+import Animations.AnimationRunner;
+import Animations.CountdownAnimation;
+import Animations.KeyPressStoppableAnimation;
+import Animations.PauseScreen;
 import Collidables.Block;
 import Collidables.Collidable;
 import Collidables.GameEnvironment;
@@ -187,7 +192,6 @@ public class GameLevel implements Animation {
         //check for end of level or game
         if (this.blocksCounter.getValue()
                 == this.levelInformation.blocks().size() - this.levelInformation.numberOfBlocksToRemove()) {
-            this.scoreCounter.increase(100);
             this.running = false;
         } else if (this.ballsCounter.getValue() == 0) {
             LIVES.decrease(1);

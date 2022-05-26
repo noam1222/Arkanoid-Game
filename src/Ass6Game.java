@@ -1,6 +1,6 @@
 // 209407162 Noam Maimon
 
-import GameHandler.AnimationRunner;
+import Animations.AnimationRunner;
 import GameHandler.GameFlow;
 import Helpers.Constants;
 import Levels.Level1;
