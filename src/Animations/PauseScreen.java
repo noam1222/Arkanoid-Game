@@ -14,8 +14,8 @@ public class PauseScreen implements Animation {
         d.setColor(new Color(100, 120, 225));
         d.fillRectangle(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
         d.setColor(Color.pink);
-        d.drawText(Constants.SCREEN_WIDTH / 4 - 230, Constants.SCREEN_HEIGHT / 2 - 100,
-                "                    paused", 60);
+        d.drawText(Constants.SCREEN_WIDTH / 4 + 110, Constants.SCREEN_HEIGHT / 2 - 100,
+                "paused", 60);
         d.fillCircle(Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGHT / 2, 80);
         d.setColor(Color.white);
         d.fillRectangle(Constants.SCREEN_WIDTH / 2 - 45, Constants.SCREEN_HEIGHT / 2 - 40,

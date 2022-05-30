@@ -32,21 +32,21 @@ public class Ass6Game {
 
     /**
      * get the levels base on levels array.
+     *
      * @param args the levels array.
      * @return List of the levels.
      */
     private static List<LevelInformation> getLevels(String[] args) {
         List<LevelInformation> levels = new ArrayList<>();
-        if (args.length == 0) {
+        for (String s : args) {
+            LevelInformation li = getLevelInformation(s);
+            if (li != null) {
+                levels.add(li);
+            }
+        }
+        if (levels.isEmpty())  {
             for (int i = 1; i <= 4; i++) {
                 LevelInformation li = getLevelInformation(Integer.toString(i));
-                if (li != null) {
-                    levels.add(li);
-                }
-            }
-        } else {
-            for (String s : args) {
-                LevelInformation li = getLevelInformation(s);
                 if (li != null) {
                     levels.add(li);
                 }
@@ -57,21 +57,22 @@ public class Ass6Game {
 
     /**
      * get level information object.
+     *
      * @param levelNumber the number of the requested level.
      * @return the level information requested.
      */
     private static LevelInformation getLevelInformation(String levelNumber) {
-        try {
-            int num = Integer.parseInt(levelNumber);
-            return switch (num) {
-                case 1 -> new Level1();
-                case 2 -> new Level2();
-                case 3 -> new Level3();
-                case 4 -> new Level4();
-                default -> null;
-            };
-        } catch (Exception e) {
-            return null;
+        switch (levelNumber) {
+            case "1":
+                return new Level1();
+            case "2":
+                return new Level2();
+            case "3":
+                return new Level3();
+            case "4":
+                return new Level4();
+            default:
+                return null;
         }
     }
 }
