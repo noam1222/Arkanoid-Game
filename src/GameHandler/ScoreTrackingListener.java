@@ -1,5 +1,3 @@
-// 209407162 Noam Maimon
-
 package GameHandler;
 
 import Collidables.Block;

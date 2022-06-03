@@ -1,5 +1,3 @@
-// 209407162 Noam Maimon
-
 package Notification;
 
 import Collidables.Block;

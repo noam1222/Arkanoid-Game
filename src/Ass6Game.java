@@ -1,5 +1,3 @@
-// 209407162 Noam Maimon
-
 import Animations.AnimationRunner;
 import GameHandler.GameFlow;
 import Helpers.Constants;
